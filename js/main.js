@@ -12,6 +12,8 @@ var TEXT_COMMENTS = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 var NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
+var MIN_LIKES = 15;
+var MAX_LIKES = 200;
 
 var getRandomNumber = function (a, b) {
   return Math.floor(Math.random() * (b - a) + a);
@@ -28,7 +30,7 @@ var getDescriptionImage = function () {
 };
 
 var getRandomLikes = function () {
-  var likes = getRandomNumber(15, 200);
+  var likes = getRandomNumber(MIN_LIKES, MAX_LIKES);
   return likes;
 };
 
