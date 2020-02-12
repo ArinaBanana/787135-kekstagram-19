@@ -119,3 +119,25 @@ var renderPhotos = function (photos) {
 
 var photos = getPhotos();
 renderPhotos(photos);
+
+// module3-task3
+var bigPicture = document.querySelector('.big-picture');
+bigPicture.classList.remove('hidden');
+
+var bigImage = document.querySelector('.big-picture__img img');
+var countLikes = document.querySelector('.likes-count');
+var countComments = document.querySelector('.comments-count');
+var comments = document.querySelector('.social__comments');
+
+var firstElementUrl = photos[0].url;
+var firstElementLikes = photos[0].likes;
+var firstElementComments = photos[0].comments.length;
+var firstElementDescription = photos[0].description;
+
+var getFirstElement = function () {
+  bigImage.setAttribute('src', firstElementUrl);
+  countLikes.textContent = firstElementLikes;
+  countComments.textContent = firstElementComments;
+};
+
+getFirstElement();
