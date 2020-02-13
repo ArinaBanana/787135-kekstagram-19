@@ -156,7 +156,7 @@ var createComments = function (comment) {
   return commentsElement;
 };
 
-var renderComments = function (comments) {
+var renderComments = function () {
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < comments.length; i++) {
