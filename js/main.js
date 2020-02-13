@@ -121,23 +121,62 @@ var photos = getPhotos();
 renderPhotos(photos);
 
 // module3-task3
+var socialCommentCount = document.querySelector('.social__comment-count');
+socialCommentCount.classList.add('hidden');
+
+var commentsLoader = document.querySelector('.comments-loader');
+commentsLoader.classList.add('hidden');
+
+var body = document.querySelector('body');
+body.classList.add('modal-open');
+
 var bigPicture = document.querySelector('.big-picture');
 bigPicture.classList.remove('hidden');
 
 var bigImage = document.querySelector('.big-picture__img img');
 var countLikes = document.querySelector('.likes-count');
 var countComments = document.querySelector('.comments-count');
-var comments = document.querySelector('.social__comments');
+var socialCaption = document.querySelector('.social__caption');
+var socialComments = document.querySelector('.social__comments');
 
-var firstElementUrl = photos[0].url;
-var firstElementLikes = photos[0].likes;
-var firstElementComments = photos[0].comments.length;
-var firstElementDescription = photos[0].description;
+var socialComment = document.querySelector('.social__comment');
+
+var comments = photos[0].comments;
+
+var createComments = function (comment) {
+  var commentsElement = socialComment.cloneNode(true);
+
+  var commentAvatar = commentsElement.querySelector('.social__picture');
+  commentAvatar.setAttribute('src', comment.avatar);
+  commentAvatar.setAttribute('alt', comment.name);
+
+  var commentText = commentsElement.querySelector('.social__text');
+  commentText.textContent = comment.message;
+
+  return commentsElement;
+};
+
+var renderComments = function (comments) {
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < comments.length; i++) {
+    var comment = comments[i];
+    var commentElement = createComments(comment);
+    fragment.appendChild(commentElement);
+  }
+
+  socialComments.innerHTML = '';
+  socialComments.appendChild(fragment);
+
+  // socialComments.replaceChild(fragment, socialComment);
+};
 
 var getFirstElement = function () {
-  bigImage.setAttribute('src', firstElementUrl);
-  countLikes.textContent = firstElementLikes;
-  countComments.textContent = firstElementComments;
+  bigImage.setAttribute('src', photos[0].url);
+  countLikes.textContent = photos[0].likes;
+  countComments.textContent = photos[0].comments.length;
+  socialCaption.textContent = photos[0].description;
+  renderComments(comments);
 };
 
 getFirstElement();
