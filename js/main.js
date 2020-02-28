@@ -143,15 +143,15 @@ var socialComment = document.querySelector('.social__comment');
 
 var comments = photos[0].comments;
 
-var createComments = function (comment) {
+var createComments = function (commentData) {
   var commentsElement = socialComment.cloneNode(true);
 
   var commentAvatar = commentsElement.querySelector('.social__picture');
-  commentAvatar.setAttribute('src', comment.avatar);
-  commentAvatar.setAttribute('alt', comment.name);
+  commentAvatar.setAttribute('src', commentData.avatar);
+  commentAvatar.setAttribute('alt', commentData.name);
 
   var commentText = commentsElement.querySelector('.social__text');
-  commentText.textContent = comment.message;
+  commentText.textContent = commentData.message;
 
   return commentsElement;
 };
