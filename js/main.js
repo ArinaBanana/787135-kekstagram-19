@@ -128,10 +128,10 @@ var commentsLoader = document.querySelector('.comments-loader');
 commentsLoader.classList.add('hidden');
 
 var body = document.querySelector('body');
-body.classList.add('modal-open');
+// body.classList.add('modal-open');
 
 var bigPicture = document.querySelector('.big-picture');
-bigPicture.classList.remove('hidden');
+// bigPicture.classList.remove('hidden');
 
 var bigImage = document.querySelector('.big-picture__img img');
 var countLikes = document.querySelector('.likes-count');
