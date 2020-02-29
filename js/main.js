@@ -180,3 +180,32 @@ var getFirstElement = function () {
 };
 
 getFirstElement();
+
+// module4-task2
+var ESC_KEY = 'Escape';
+
+var uploadImg = document.querySelector('.img-upload__overlay');
+var uploadInput = document.querySelector('.img-upload__input');
+var uploadClose = document.querySelector('.img-upload__cancel');
+
+var pressEscapeHandler = function (evt) {
+  if (evt.key === ESC_KEY) {
+    closePopup();
+  }
+};
+var openPopup = function () {
+  uploadImg.classList.remove('hidden');
+  document.addEventListener('keydown', pressEscapeHandler);
+};
+var closePopup = function () {
+  uploadImg.classList.add('hidden');
+  document.removeEventListener('keydown', pressEscapeHandler);
+};
+
+uploadInput.addEventListener('change', function () {
+  openPopup();
+});
+
+uploadClose.addEventListener('click', function () {
+  closePopup();
+});
