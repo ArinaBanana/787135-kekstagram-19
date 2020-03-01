@@ -190,10 +190,22 @@ var uploadInput = document.querySelector('.img-upload__input');
 var uploadClose = document.querySelector('.img-upload__cancel');
 
 var pressEscapeHandler = function (evt) {
-  if (evt.key === ESC_KEY) {
+  if (evt.key === ESC_KEY && !isElementPreventEscape(document.activeElement)) {
     closePopup();
   }
 };
+var isElementPreventEscape = function (element) {
+  if (element.tagName === 'INPUT' && element.name === 'hashtags') {
+    return true;
+  }
+
+  if (element.tagName === 'TEXTAREA' && element.name === 'description') {
+    return true;
+  }
+
+  return false;
+};
+
 var openPopup = function () {
   uploadImg.classList.remove('hidden');
   document.addEventListener('keydown', pressEscapeHandler);
