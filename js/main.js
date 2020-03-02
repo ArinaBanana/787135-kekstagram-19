@@ -248,3 +248,56 @@ uploadForm.addEventListener('change', function (evt) {
   }
 });
 
+// валидация формы
+
+var hashtagInput = uploadForm.querySelector('.text__hashtags');
+
+var validateHashtag = function (hashtag) {
+  if (hashtag[0] !== '#') {
+    return 'Хэш-тег должен начинаться с #';
+  }
+
+  if (hashtag.length < 2) {
+    return 'Хэш-тег не может состоять только из #';
+  }
+
+  if (!(/^#[a-zA-Z0-9]+$/.test(hashtag))) {
+    return 'Хэш-тег не может содержать пробелы, спецсимволы, знаки пунктуации или эмодзи';
+  }
+
+  if (hashtag.length > 20) {
+    return 'Хэш-тег слишком длинный';
+  }
+
+  return null;
+};
+
+var getValidateValue = function () {
+  var hashtagString = hashtagInput.value;
+  var hashtags = hashtagString.split(' ');
+
+  // if проверяет наличие хештегов а не пустую строку
+  if (hashtags.length === 0) {
+    return null;
+  }
+
+  if (hashtags.length > 5) {
+    return 'Может содержать только 5 хэштегов';
+  }
+
+  for (var i = 0; i < hashtags.length; i++) {
+    var hashtag = hashtags[i];
+    var validateValue = validateHashtag(hashtag);
+  }
+
+  return validateValue;
+};
+
+uploadForm.addEventListener('submit', function (evt) {
+  var valueError = getValidateValue();
+
+  if (valueError !== null) {
+    evt.preventDefault();
+    hashtagInput.setCustomValidity(valueError);
+  }
+});
