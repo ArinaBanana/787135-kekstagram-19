@@ -185,13 +185,16 @@ getFirstElement();
 var ESC_KEY = 'Escape';
 var DEFAULT_EFFECT = 'none';
 
-var uploadImg = document.querySelector('.img-upload__overlay');
-var uploadInput = document.querySelector('.img-upload__input');
-var uploadClose = document.querySelector('.img-upload__cancel');
+var uploadForm = document.querySelector('.img-upload__form');
+var uploadImg = uploadForm.querySelector('.img-upload__overlay');
+var uploadInput = uploadForm.querySelector('.img-upload__input');
+var uploadClose = uploadForm.querySelector('.img-upload__cancel');
+var effectPicture = uploadForm.querySelector('.img-upload__preview');
 
 var pressEscapeHandler = function (evt) {
   if (evt.key === ESC_KEY && !isElementPreventEscape(document.activeElement)) {
     closePopup();
+    uploadForm.reset();
   }
 };
 var isElementPreventEscape = function (element) {
@@ -226,9 +229,6 @@ uploadClose.addEventListener('click', function () {
 
 // наложение эффектов на фото
 
-var effects = document.querySelector('.effects');
-var effectPicture = document.querySelector('.img-upload__preview');
-
 var applyEffect = function (effect) {
 
   for (var i = 0; i < effectPicture.classList.length; i++) {
@@ -242,9 +242,9 @@ var applyEffect = function (effect) {
   effectPicture.classList.add('effects__preview--' + effect);
 };
 
-effects.addEventListener('click', function (evt) {
-  var valueItem = evt.target.value;
-
-  applyEffect(valueItem);
+uploadForm.addEventListener('change', function (evt) {
+  if (evt.target.name === 'effect') {
+    applyEffect(evt.target.value);
+  }
 });
 
