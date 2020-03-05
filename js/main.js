@@ -127,6 +127,7 @@ socialCommentCount.classList.add('hidden');
 var commentsLoader = document.querySelector('.comments-loader');
 commentsLoader.classList.add('hidden');
 
+// когда открыты модальные окна добавлять этот класс
 var body = document.querySelector('body');
 body.classList.add('modal-open');
 
