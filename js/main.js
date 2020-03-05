@@ -251,8 +251,6 @@ uploadForm.addEventListener('change', function (evt) {
 
 // валидация формы
 
-var hashtagInput = uploadForm.querySelector('.text__hashtags');
-
 var validateHashtag = function (hashtag) {
   if (hashtag[0] !== '#') {
     return 'Хэш-тег должен начинаться с #';
@@ -270,12 +268,12 @@ var validateHashtag = function (hashtag) {
     return 'Хэш-тег слишком длинный';
   }
 
-  return null;
+  return '';
 };
 
 var getErrorText = function (hashtags) {
   if (hashtags.length === 0) {
-    return null;
+    return '';
   }
 
   for (var i = 0; i < hashtags.length; i++) {
@@ -283,7 +281,7 @@ var getErrorText = function (hashtags) {
     var hashtag = hashtags[i];
     var errorText = validateHashtag(hashtag);
 
-    if (errorText !== null) {
+    if (errorText) {
       return errorText;
     }
   }
@@ -296,7 +294,7 @@ var getErrorText = function (hashtags) {
     return 'Хэш-тег можно указать один раз!';
   }
 
-  return null;
+  return '';
 };
 
 var checkDouble = function (hashtags) {
@@ -316,14 +314,16 @@ var checkDouble = function (hashtags) {
   return true;
 };
 
-uploadForm.addEventListener('submit', function (evt) {
-  var hashtagString = hashtagInput.value;
-  var hashtags = hashtagString.split(' ');
+uploadForm.addEventListener('change', function (evt) {
+  if (evt.target.name === 'hashtags') {
+    var hashtagString = evt.target.value.trim();
+    var errorText = '';
 
-  var valueError = getErrorText(hashtags);
+    if (hashtagString) {
+      var hashtags = hashtagString.split(' ');
+      errorText = getErrorText(hashtags);
+    }
 
-  if (valueError !== null) {
-    evt.preventDefault();
-    hashtagInput.setCustomValidity(valueError);
+    evt.target.setCustomValidity(errorText);
   }
 });
