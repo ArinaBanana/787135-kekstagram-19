@@ -127,11 +127,12 @@ socialCommentCount.classList.add('hidden');
 var commentsLoader = document.querySelector('.comments-loader');
 commentsLoader.classList.add('hidden');
 
+// когда открыты модальные окна добавлять этот класс
 var body = document.querySelector('body');
 body.classList.add('modal-open');
 
-var bigPicture = document.querySelector('.big-picture');
-bigPicture.classList.remove('hidden');
+// var bigPicture = document.querySelector('.big-picture');
+// bigPicture.classList.remove('hidden');
 
 var bigImage = document.querySelector('.big-picture__img img');
 var countLikes = document.querySelector('.likes-count');
@@ -143,15 +144,15 @@ var socialComment = document.querySelector('.social__comment');
 
 var comments = photos[0].comments;
 
-var createComments = function (comment) {
+var createComments = function (commentData) {
   var commentsElement = socialComment.cloneNode(true);
 
   var commentAvatar = commentsElement.querySelector('.social__picture');
-  commentAvatar.setAttribute('src', comment.avatar);
-  commentAvatar.setAttribute('alt', comment.name);
+  commentAvatar.setAttribute('src', commentData.avatar);
+  commentAvatar.setAttribute('alt', commentData.name);
 
   var commentText = commentsElement.querySelector('.social__text');
-  commentText.textContent = comment.message;
+  commentText.textContent = commentData.message;
 
   return commentsElement;
 };
@@ -180,3 +181,149 @@ var getFirstElement = function () {
 };
 
 getFirstElement();
+
+// module4-task2
+var ESC_KEY = 'Escape';
+var DEFAULT_EFFECT = 'none';
+
+var uploadForm = document.querySelector('.img-upload__form');
+var uploadImg = uploadForm.querySelector('.img-upload__overlay');
+var uploadInput = uploadForm.querySelector('.img-upload__input');
+var uploadClose = uploadForm.querySelector('.img-upload__cancel');
+var effectPicture = uploadForm.querySelector('.img-upload__preview');
+
+var pressEscapeHandler = function (evt) {
+  if (evt.key === ESC_KEY && !isElementPreventEscape(document.activeElement)) {
+    closePopup();
+    uploadForm.reset();
+  }
+};
+var isElementPreventEscape = function (element) {
+  if (element.tagName === 'INPUT' && element.name === 'hashtags') {
+    return true;
+  }
+
+  if (element.tagName === 'TEXTAREA' && element.name === 'description') {
+    return true;
+  }
+
+  return false;
+};
+
+var openPopup = function () {
+  uploadImg.classList.remove('hidden');
+  document.addEventListener('keydown', pressEscapeHandler);
+};
+var closePopup = function () {
+  uploadImg.classList.add('hidden');
+  document.removeEventListener('keydown', pressEscapeHandler);
+};
+
+uploadInput.addEventListener('change', function () {
+  applyEffect(DEFAULT_EFFECT);
+  openPopup();
+});
+
+uploadClose.addEventListener('click', function () {
+  closePopup();
+});
+
+// наложение эффектов на фото
+
+var applyEffect = function (effect) {
+
+  for (var i = 0; i < effectPicture.classList.length; i++) {
+    var effectValue = effectPicture.classList[i];
+
+    if (effectValue.indexOf('effects__preview--') === 0) {
+      effectPicture.classList.remove(effectValue);
+    }
+  }
+
+  effectPicture.classList.add('effects__preview--' + effect);
+};
+
+uploadForm.addEventListener('change', function (evt) {
+  if (evt.target.name === 'effect') {
+    applyEffect(evt.target.value);
+  }
+});
+
+// валидация формы
+
+var validateHashtag = function (hashtag) {
+  if (hashtag[0] !== '#') {
+    return 'Хэш-тег должен начинаться с #';
+  }
+
+  if (hashtag.length < 2) {
+    return 'Хэш-тег не может состоять только из #';
+  }
+
+  if (!(/^#[a-zA-Z0-9]+$/.test(hashtag))) {
+    return 'Хэш-тег не может содержать пробелы, спецсимволы, знаки пунктуации или эмодзи';
+  }
+
+  if (hashtag.length > 20) {
+    return 'Хэш-тег слишком длинный';
+  }
+
+  return '';
+};
+
+var getErrorText = function (hashtags) {
+  if (hashtags.length === 0) {
+    return '';
+  }
+
+  for (var i = 0; i < hashtags.length; i++) {
+
+    var hashtag = hashtags[i];
+    var errorText = validateHashtag(hashtag);
+
+    if (errorText) {
+      return errorText;
+    }
+  }
+
+  if (hashtags.length > 5) {
+    return 'Может содержать только 5 хэштегов';
+  }
+
+  if (!checkDouble(hashtags)) {
+    return 'Хэш-тег можно указать один раз!';
+  }
+
+  return '';
+};
+
+var checkDouble = function (hashtags) {
+  var checked = {};
+
+  for (var i = 0; i < hashtags.length; i++) {
+    var el = hashtags[i];
+    var key = el.toLowerCase();
+
+    if (!checked[key]) {
+      checked[key] = true;
+    } else {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+uploadForm.addEventListener('change', function (evt) {
+  if (evt.target.name === 'hashtags') {
+    var hashtagString = evt.target.value.trim();
+    var errorText = '';
+
+    if (hashtagString) {
+      var hashtags = hashtagString.split(' ');
+      errorText = getErrorText(hashtags);
+    }
+
+    evt.target.setCustomValidity(errorText);
+  }
+});
