@@ -272,29 +272,54 @@ var validateHashtag = function (hashtag) {
   return null;
 };
 
-var getValidateValue = function () {
-  var hashtagString = hashtagInput.value;
-  var hashtags = hashtagString.split(' ');
-
-  // if проверяет наличие хештегов а не пустую строку
+var getErrorText = function (hashtags) {
   if (hashtags.length === 0) {
     return null;
+  }
+
+  for (var i = 0; i < hashtags.length; i++) {
+
+    var hashtag = hashtags[i];
+    var errorText = validateHashtag(hashtag);
+
+    if (errorText !== null) {
+      return errorText;
+    }
   }
 
   if (hashtags.length > 5) {
     return 'Может содержать только 5 хэштегов';
   }
 
-  for (var i = 0; i < hashtags.length; i++) {
-    var hashtag = hashtags[i];
-    var validateValue = validateHashtag(hashtag);
+  if (!checkDouble(hashtags)) {
+    return 'Хэш-тег можно указать один раз!';
   }
 
-  return validateValue;
+  return null;
+};
+
+var checkDouble = function (hashtags) {
+  var checked = {};
+
+  for (var i = 0; i < hashtags.length; i++) {
+    var el = hashtags[i];
+    var key = el.toLowerCase();
+
+    if (!checked[key]) {
+      checked[key] = true;
+    } else {
+      return false;
+    }
+  }
+
+  return true;
 };
 
 uploadForm.addEventListener('submit', function (evt) {
-  var valueError = getValidateValue();
+  var hashtagString = hashtagInput.value;
+  var hashtags = hashtagString.split(' ');
+
+  var valueError = getErrorText(hashtags);
 
   if (valueError !== null) {
     evt.preventDefault();
