@@ -271,7 +271,7 @@ var validateHashtag = function (hashtag) {
   return '';
 };
 
-var getErrorText = function (hashtags) {
+var getHashtagsValidationMessage = function (hashtags) {
   if (hashtags.length === 0) {
     return '';
   }
@@ -290,18 +290,18 @@ var getErrorText = function (hashtags) {
     return 'Может содержать только 5 хэштегов';
   }
 
-  if (!checkDouble(hashtags)) {
+  if (!hasDublicate(hashtags)) {
     return 'Хэш-тег можно указать один раз!';
   }
 
   return '';
 };
 
-var checkDouble = function (hashtags) {
+var hasDublicate = function (array) {
   var checked = {};
 
-  for (var i = 0; i < hashtags.length; i++) {
-    var el = hashtags[i];
+  for (var i = 0; i < array.length; i++) {
+    var el = array[i];
     var key = el.toLowerCase();
 
     if (!checked[key]) {
@@ -321,7 +321,7 @@ uploadForm.addEventListener('change', function (evt) {
 
     if (hashtagString) {
       var hashtags = hashtagString.split(' ');
-      errorText = getErrorText(hashtags);
+      errorText = getHashtagsValidationMessage(hashtags);
     }
 
     evt.target.setCustomValidity(errorText);
