@@ -1,11 +1,13 @@
 'use strict';
 
 window.utils = (function () {
+  var ESC_KEY = 'Escape';
+
   var getRandomNumber = function (a, b) {
     return Math.floor(Math.random() * (b - a) + a);
   };
 
-  var hasDublicate = function (array) {
+  var hasDuplicate = function (array) {
     var checked = {};
 
     for (var i = 0; i < array.length; i++) {
@@ -24,7 +26,8 @@ window.utils = (function () {
 
   return {
     getRandomNumber: getRandomNumber,
-    hasDuplicate: hasDublicate
+    hasDuplicate: hasDuplicate,
+    escKey: ESC_KEY
   };
 
 })();

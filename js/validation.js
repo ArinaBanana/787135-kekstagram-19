@@ -40,7 +40,7 @@ window.validation = (function () {
       return 'Может содержать только 5 хэштегов';
     }
 
-    if (!window.utils.hasDublicate(hashtags)) {
+    if (!window.utils.hasDuplicate(hashtags)) {
       return 'Хэш-тег можно указать один раз!';
     }
 

@@ -1,6 +1,6 @@
 'use strict';
 
-window.applyEffect = (function () {
+window.effects = (function () {
   var effectPicture = document.querySelector('.img-upload__preview');
 
   var applyEffect = function (effect) {

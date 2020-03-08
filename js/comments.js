@@ -1,17 +1,15 @@
 'use strict';
 
-window.renderComments = (function () {
+window.comments = (function () {
+  // временно скрывает кол-во комментариев
   var socialCommentCount = document.querySelector('.social__comment-count');
   socialCommentCount.classList.add('hidden');
-
   var commentsLoader = document.querySelector('.comments-loader');
   commentsLoader.classList.add('hidden');
 
+
   var socialComments = document.querySelector('.social__comments');
-
   var socialComment = document.querySelector('.social__comment');
-
-  var comments = window.renderPhotos.photos[0].comments;
 
   var createComments = function (commentData) {
     var commentsElement = socialComment.cloneNode(true);
@@ -26,7 +24,7 @@ window.renderComments = (function () {
     return commentsElement;
   };
 
-  var renderComments = function () {
+  var renderComments = function (comments) {
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < comments.length; i++) {
@@ -42,8 +40,7 @@ window.renderComments = (function () {
   };
 
   return {
-    renderComments: renderComments,
-    comments: comments
+    renderComments: renderComments
   };
 
 })();
