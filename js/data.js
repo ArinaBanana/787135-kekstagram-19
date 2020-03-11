@@ -12,7 +12,12 @@ window.data = (function () {
   var NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
   var MIN_LIKES = 15;
   var MAX_LIKES = 200;
+  var LOAD_DATA_URL = 'https://js.dump.academy/kekstagram/data';
 
+
+  var get = window.http.get;
+  var renderPhotos = window.photos.renderPhotos;
+  var renderBigPhoto = window.bigPhoto.renderBigPhoto;
 
   var getUrlImage = function (numPhoto) {
     var urlImage = 'photos/' + numPhoto + '.jpg';
@@ -85,8 +90,15 @@ window.data = (function () {
     return photos;
   };
 
-  return {
-    getPhotos: getPhotos
+  var successHandler = function (data) {
+    var photos = data;
+    renderPhotos(photos);
+    renderBigPhoto(photos[0]);
   };
 
+  var errorHandler = function () {
+    console.log('Ошибка');
+  };
+
+  get(LOAD_DATA_URL, successHandler, errorHandler);
 })();

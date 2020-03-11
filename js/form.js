@@ -2,12 +2,14 @@
 
 window.form = (function () {
   var DEFAULT_EFFECT = 'none';
-
+  var UPLOAD_URL = 'https://js.dump.academy/kekstagram';
   var ESC_KEY = window.utils.escKey;
+
   var closePopup = window.openClosePopup.closePopup;
   var openPopup = window.openClosePopup.openPopup;
   var applyEffect = window.effects.applyEffect;
   var getHashtagsValidationMessage = window.validation.getHashtagsValidationMessage;
+  var post = window.http.post;
 
   var uploadForm = document.querySelector('.img-upload__form');
   var uploadImg = uploadForm.querySelector('.img-upload__overlay');
@@ -59,6 +61,18 @@ window.form = (function () {
 
       evt.target.setCustomValidity(errorText);
     }
+  });
+
+  var successHahdler = function () {
+    return console.log('Успешно');
+  };
+  var errorHandler = function () {
+    return console.log('Ошибка');
+  };
+
+  uploadForm.addEventListener('submit', function (evt) {
+    post(UPLOAD_URL, new FormData(uploadForm), successHahdler, errorHandler);
+    evt.preventDefault();
   });
 
 })();

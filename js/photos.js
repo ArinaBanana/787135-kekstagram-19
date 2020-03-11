@@ -1,9 +1,6 @@
 'use strict';
 
 window.photos = (function () {
-  var renderBigPhoto = window.bigPhoto.renderBigPhoto;
-  var getPhotos = window.data.getPhotos;
-
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var pictures = document.querySelector('.pictures');
 
@@ -34,8 +31,8 @@ window.photos = (function () {
     pictures.appendChild(fragment);
   };
 
-  var photos = getPhotos();
-  renderPhotos(photos);
+  return {
+    renderPhotos: renderPhotos
+  };
 
-  renderBigPhoto(photos[0]);
 })();
