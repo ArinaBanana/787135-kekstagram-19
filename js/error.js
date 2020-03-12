@@ -52,7 +52,7 @@ window.errors = (function () {
       }
     };
 
-    var actionButtonHandler = function (evt) {
+    var actionButtonHandler = function () {
       actionHandler();
       removeError();
     };

@@ -40,7 +40,7 @@ window.success = (function () {
       }
     };
 
-    var actionButtonHandler = function (evt) {
+    var actionButtonHandler = function () {
       removeSuccess();
     };
 

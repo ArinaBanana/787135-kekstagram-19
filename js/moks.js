@@ -75,13 +75,13 @@ window.moki = (function () {
     return photo;
   };
 
-  var getPhotos = function () {
-    var photos = [];
-
-    for (var i = 1; i <= 25; i++) {
-      photos.push(getPhoto(i));
-    }
-
-    return photos;
-  };
+  // var getPhotos = function () {
+  //   var photos = [];
+  //
+  //   for (var i = 1; i <= 25; i++) {
+  //     photos.push(getPhoto(i));
+  //   }
+  //
+  //   return photos;
+  // };
 })();
