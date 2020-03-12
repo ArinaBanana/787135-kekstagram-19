@@ -4,6 +4,9 @@ window.photos = (function () {
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var pictures = document.querySelector('.pictures');
 
+  var getPhotos = window.data.getPhotos;
+  var renderError = window.errors.renderError;
+
   var createPhotoElement = function (photo) {
     var photoElement = pictureTemplate.cloneNode(true);
 
@@ -31,8 +34,18 @@ window.photos = (function () {
     pictures.appendChild(fragment);
   };
 
-  return {
-    renderPhotos: renderPhotos
+  var successHandler = function (data) {
+    var photos = data;
+    renderPhotos(photos);
+    // renderBigPhoto(photos[0]);
   };
+
+  var errorHandler = function (err) {
+    renderError({title: err, actionTitle: 'Повторить'}, function () {
+      getPhotos(successHandler, errorHandler);
+    });
+  };
+
+  getPhotos(successHandler, errorHandler);
 
 })();
