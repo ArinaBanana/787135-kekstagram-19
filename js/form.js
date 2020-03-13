@@ -2,21 +2,26 @@
 
 window.form = (function () {
   var DEFAULT_EFFECT = 'none';
-
+  var UPLOAD_URL = 'https://js.dump.academy/kekstagram';
   var ESC_KEY = window.utils.escKey;
+
   var closePopup = window.openClosePopup.closePopup;
   var openPopup = window.openClosePopup.openPopup;
   var applyEffect = window.effects.applyEffect;
   var getHashtagsValidationMessage = window.validation.getHashtagsValidationMessage;
+  var post = window.http.post;
+  var renderError = window.errors.renderError;
+  var renderSuccess = window.success.renderSuccess;
 
   var uploadForm = document.querySelector('.img-upload__form');
-  var uploadImg = uploadForm.querySelector('.img-upload__overlay');
+  var uploadImgOverlay = uploadForm.querySelector('.img-upload__overlay');
   var uploadInput = uploadForm.querySelector('.img-upload__input');
   var uploadClose = uploadForm.querySelector('.img-upload__cancel');
+  var buttonSubmit = uploadForm.querySelector('.img-upload__submit');
 
   var pressEscapeHandler = function (evt) {
     if (evt.key === ESC_KEY && !isElementPreventEscape(document.activeElement)) {
-      closePopup(uploadImg, pressEscapeHandler);
+      closePopup(uploadImgOverlay, pressEscapeHandler);
       uploadForm.reset();
     }
   };
@@ -32,13 +37,21 @@ window.form = (function () {
     return false;
   };
 
-  uploadInput.addEventListener('change', function () {
+  var openPopupForm = function () {
     applyEffect(DEFAULT_EFFECT);
-    openPopup(uploadImg, pressEscapeHandler);
+    openPopup(uploadImgOverlay, pressEscapeHandler);
+    buttonSubmit.removeAttribute('disabled');
+  };
+
+  uploadInput.addEventListener('change', function (evt) {
+    var isFile = evt.target.files.length === 1;
+    if (isFile) {
+      openPopupForm();
+    }
   });
 
   uploadClose.addEventListener('click', function () {
-    closePopup(uploadImg, pressEscapeHandler);
+    closePopup(uploadImgOverlay, pressEscapeHandler);
   });
 
   uploadForm.addEventListener('change', function (evt) {
@@ -59,6 +72,26 @@ window.form = (function () {
 
       evt.target.setCustomValidity(errorText);
     }
+  });
+
+  var successHahdler = function () {
+    closePopup(uploadImgOverlay, pressEscapeHandler);
+    uploadForm.reset();
+    renderSuccess();
+  };
+  var errorHandler = function (err) {
+    closePopup(uploadImgOverlay, pressEscapeHandler);
+    renderError({title: err, actionTitle: 'Загрузить другой файл'}, function () {
+      uploadInput.click();
+    });
+  };
+
+  uploadForm.addEventListener('submit', function (evt) {
+    buttonSubmit.setAttribute('disabled', 'disabled');
+
+    var formData = new FormData(evt.target);
+    post(UPLOAD_URL, formData, successHahdler, errorHandler);
+    evt.preventDefault();
   });
 
 })();
