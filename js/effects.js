@@ -39,7 +39,7 @@ window.effects = (function () {
 
   var effectPicture = document.querySelector('.img-upload__preview');
 
-  var setEffect = function (effect, getDefaultPositionToggle) {
+  var setEffect = function (effect) {
 
     for (var i = 0; i < effectPicture.classList.length; i++) {
       var effectValue = effectPicture.classList[i];
@@ -56,15 +56,12 @@ window.effects = (function () {
     switch (value.UNIT) {
       case 'float':
         effectPicture.style.filter = value.EFFECT + '(' + value.MAX + ')';
-        getDefaultPositionToggle();
         return;
       case 'percent':
         effectPicture.style.filter = value.EFFECT + '(' + value.MAX + '%)';
-        getDefaultPositionToggle();
         return;
       case 'pixel':
         effectPicture.style.filter = value.EFFECT + '(' + value.MAX + 'px)';
-        getDefaultPositionToggle();
         return;
       default:
         effectPicture.style.filter = null;

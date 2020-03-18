@@ -8,15 +8,17 @@ window.slider = (function () {
 
     var sliderInputValue = effectLevel.querySelector('.effect-level__value');
 
-    var getValue = function () {
-      return sliderInputValue.value;
+    var setValue = function (position) {
+      var value = (sliderRange.offsetWidth * position) + 'px';
+
+      sliderToggle.style.left = value;
+      sliderControlDepth.style.width = value;
+
+      sliderInputValue.setAttribute('value', position);
     };
 
-    var getDefaultPositionToggle = function () {
-      var positionDefault = '453px';
-
-      sliderToggle.style.left = positionDefault;
-      sliderControlDepth.style.width = positionDefault;
+    var setDefaultPositionToggle = function () {
+      setValue(1);
     };
 
     var showSlider = function () {
@@ -43,13 +45,9 @@ window.slider = (function () {
           togglePosition = sliderRange.offsetWidth;
         }
 
-        sliderToggle.style.left = togglePosition + 'px';
-        sliderControlDepth.style.width = togglePosition + 'px';
-
         var togglePositionPercent = togglePosition / sliderRange.offsetWidth;
-
+        setValue(togglePositionPercent);
         changeHandler(togglePositionPercent);
-        sliderInputValue.setAttribute('value', togglePositionPercent);
       };
 
       var upHandler = function () {
@@ -63,8 +61,7 @@ window.slider = (function () {
     });
 
     return {
-      getValue: getValue,
-      getDefaultPositionToggle: getDefaultPositionToggle,
+      setDefaultPositionToggle: setDefaultPositionToggle,
       showSlider: showSlider,
       hideSlider: hideSlider
     };

@@ -68,13 +68,14 @@ window.form = (function () {
       };
       var slider = getSlider(effectLevel, changeHandler);
 
-      setEffect(effect, slider.getDefaultPositionToggle);
-
       if (effect === 'none') {
         slider.hideSlider();
       } else {
         slider.showSlider();
       }
+
+      slider.setDefaultPositionToggle();
+      setEffect(effect);
 
     }
   });
