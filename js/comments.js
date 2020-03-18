@@ -1,12 +1,10 @@
 'use strict';
 
 window.comments = (function () {
-  // временно скрывает кол-во комментариев
-  var socialCommentCount = document.querySelector('.social__comment-count');
-  socialCommentCount.classList.add('hidden');
-  var commentsLoader = document.querySelector('.comments-loader');
-  commentsLoader.classList.add('hidden');
+  var QUANTITY__COMMENTS = 5;
 
+  var socialCommentCount = document.querySelector('.social__comment-count');
+  var commentsLoader = document.querySelector('.comments-loader');
 
   var socialComments = document.querySelector('.social__comments');
   var socialComment = document.querySelector('.social__comment');
@@ -27,7 +25,7 @@ window.comments = (function () {
   var renderComments = function (comments) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < comments.length; i++) {
+    for (var i = 0; i < QUANTITY__COMMENTS; i++) {
       var comment = comments[i];
       var commentElement = createComments(comment);
       fragment.appendChild(commentElement);
@@ -35,8 +33,6 @@ window.comments = (function () {
 
     socialComments.innerHTML = '';
     socialComments.appendChild(fragment);
-
-    // socialComments.replaceChild(fragment, socialComment);
   };
 
   return {
