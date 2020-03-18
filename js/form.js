@@ -7,17 +7,21 @@ window.form = (function () {
 
   var closePopup = window.openClosePopup.closePopup;
   var openPopup = window.openClosePopup.openPopup;
+  var setEffect = window.effects.setEffect;
   var applyEffect = window.effects.applyEffect;
   var getHashtagsValidationMessage = window.validation.getHashtagsValidationMessage;
   var post = window.http.post;
   var renderError = window.errors.renderError;
   var renderSuccess = window.success.renderSuccess;
+  var getSlider = window.slider.getSlider;
 
   var uploadForm = document.querySelector('.img-upload__form');
   var uploadImgOverlay = uploadForm.querySelector('.img-upload__overlay');
   var uploadInput = uploadForm.querySelector('.img-upload__input');
   var uploadClose = uploadForm.querySelector('.img-upload__cancel');
   var buttonSubmit = uploadForm.querySelector('.img-upload__submit');
+
+  var effectLevel = document.querySelector('.effect-level');
 
   var pressEscapeHandler = function (evt) {
     if (evt.key === ESC_KEY && !isElementPreventEscape(document.activeElement)) {
@@ -38,7 +42,8 @@ window.form = (function () {
   };
 
   var openPopupForm = function () {
-    applyEffect(DEFAULT_EFFECT);
+    setEffect(DEFAULT_EFFECT);
+    effectLevel.classList.add('hidden');
     openPopup(uploadImgOverlay, pressEscapeHandler);
     buttonSubmit.removeAttribute('disabled');
   };
@@ -56,7 +61,22 @@ window.form = (function () {
 
   uploadForm.addEventListener('change', function (evt) {
     if (evt.target.name === 'effect') {
-      applyEffect(evt.target.value);
+      var effect = evt.target.value;
+
+      var changeHandler = function (currentPercent) {
+        applyEffect(currentPercent, effect);
+      };
+      var slider = getSlider(effectLevel, changeHandler);
+
+      if (effect === 'none') {
+        slider.hideSlider();
+      } else {
+        slider.showSlider();
+      }
+
+      slider.setDefaultPositionToggle();
+      setEffect(effect);
+
     }
   });
 
