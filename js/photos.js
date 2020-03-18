@@ -6,6 +6,7 @@ window.photos = (function () {
 
   var getPhotos = window.data.getPhotos;
   var renderError = window.errors.renderError;
+  var renderBigPhoto = window.bigPhoto.renderBigPhoto;
 
   var createPhotoElement = function (photo) {
     var photoElement = pictureTemplate.cloneNode(true);
@@ -25,19 +26,31 @@ window.photos = (function () {
   var renderPhotos = function (photos) {
     var fragment = document.createDocumentFragment();
 
+    var objPhotos = {};
+
     for (var i = 0; i < photos.length; i++) {
       var photo = photos[i];
+      objPhotos[photo.url] = photo;
+
       var imageElement = createPhotoElement(photo);
       fragment.appendChild(imageElement);
     }
 
     pictures.appendChild(fragment);
+
+    pictures.addEventListener('click', function (evt) {
+      if (evt.target.tagName === 'IMG') {
+        var url = evt.target.getAttribute('src');
+
+        var clickedPhoto = objPhotos[url];
+        renderBigPhoto(clickedPhoto);
+      }
+    });
   };
 
   var successHandler = function (data) {
     var photos = data;
     renderPhotos(photos);
-    // renderBigPhoto(photos[0]);
   };
 
   var errorHandler = function (err) {
