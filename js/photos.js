@@ -1,6 +1,8 @@
 'use strict';
 
 window.photos = (function () {
+  var ENTER_KEY = window.utils.entKey;
+
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var pictures = document.querySelector('.pictures');
 
@@ -38,14 +40,30 @@ window.photos = (function () {
 
     pictures.appendChild(fragment);
 
-    pictures.addEventListener('click', function (evt) {
-      if (evt.target.tagName === 'IMG') {
-        var url = evt.target.getAttribute('src');
+    var renderBigPhotoByPictureElement = function (picture) {
+      var url = picture.getAttribute('src');
+      var clickedPhoto = objPhotos[url];
+      renderBigPhoto(clickedPhoto);
+    };
 
-        var clickedPhoto = objPhotos[url];
-        renderBigPhoto(clickedPhoto);
+    var openClickHandler = function (evt) {
+      if (evt.target.tagName === 'IMG' && evt.target.classList.contains('picture__img')) {
+        renderBigPhotoByPictureElement(evt.target);
       }
-    });
+    };
+
+    pictures.addEventListener('click', openClickHandler);
+
+    var pressEnterHandler = function (evt) {
+      if (evt.key === ENTER_KEY) {
+        if (evt.target.tagName === 'A' && evt.target.classList.contains('picture')) {
+          var picture = evt.target.querySelector('.picture__img');
+          renderBigPhotoByPictureElement(picture);
+        }
+      }
+    };
+
+    document.addEventListener('keydown', pressEnterHandler);
   };
 
   var successHandler = function (data) {

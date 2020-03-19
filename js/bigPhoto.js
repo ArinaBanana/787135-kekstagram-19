@@ -2,7 +2,6 @@
 
 window.bigPhoto = (function () {
   var ESC_KEY = window.utils.escKey;
-  var ENTER_KEY = window.utils.entKey;
 
   var bigPicture = document.querySelector('.big-picture');
   var buttonClose = bigPicture.querySelector('.big-picture__cancel');
@@ -26,8 +25,6 @@ window.bigPhoto = (function () {
     var pressEscapeHandler = function (evt) {
       if (evt.key === ESC_KEY) {
         closePopup(bigPicture, pressEscapeHandler);
-      } else if (evt.key === ENTER_KEY) {
-        openPopup(bigPicture, pressEscapeHandler);
       }
     };
 
