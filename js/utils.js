@@ -2,6 +2,7 @@
 
 window.utils = (function () {
   var ESC_KEY = 'Escape';
+  var ENTER_KEY = 'Enter';
 
   var getRandomNumber = function (a, b) {
     return Math.floor(Math.random() * (b - a) + a);
@@ -27,7 +28,8 @@ window.utils = (function () {
   return {
     getRandomNumber: getRandomNumber,
     hasDuplicate: hasDuplicate,
-    escKey: ESC_KEY
+    escKey: ESC_KEY,
+    entKey: ENTER_KEY
   };
 
 })();

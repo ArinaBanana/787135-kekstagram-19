@@ -1,18 +1,17 @@
 'use strict';
 
 window.openClosePopup = (function () {
-
-  // когда открыты модальные окна добавлять этот класс
-  // var body = document.querySelector('body');
-  // body.classList.add('modal-open');
+  var body = document.querySelector('body');
 
   var openPopup = function (domElement, pressEscapeHandler) {
     domElement.classList.remove('hidden');
     document.addEventListener('keydown', pressEscapeHandler);
+    body.classList.add('modal-open');
   };
   var closePopup = function (domElement, pressEscapeHandler) {
     domElement.classList.add('hidden');
     document.removeEventListener('keydown', pressEscapeHandler);
+    body.classList.remove('modal-open');
   };
 
   return {

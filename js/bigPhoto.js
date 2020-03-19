@@ -1,10 +1,14 @@
 'use strict';
 
 window.bigPhoto = (function () {
-  // открытие просмотра фотографии
-  // var bigPicture = document.querySelector('.big-picture');
-  // bigPicture.classList.remove('hidden');
+  var ESC_KEY = window.utils.escKey;
+
+  var bigPicture = document.querySelector('.big-picture');
+  var buttonClose = bigPicture.querySelector('.big-picture__cancel');
+
   var renderComments = window.comments.renderComments;
+  var openPopup = window.openClosePopup.openPopup;
+  var closePopup = window.openClosePopup.closePopup;
 
   var bigImage = document.querySelector('.big-picture__img img');
   var countLikes = document.querySelector('.likes-count');
@@ -17,6 +21,18 @@ window.bigPhoto = (function () {
     countComments.textContent = photo.comments.length;
     socialCaption.textContent = photo.description;
     renderComments(photo.comments);
+
+    var pressEscapeHandler = function (evt) {
+      if (evt.key === ESC_KEY) {
+        closePopup(bigPicture, pressEscapeHandler);
+      }
+    };
+
+    buttonClose.addEventListener('click', function () {
+      closePopup(bigPicture, pressEscapeHandler);
+    });
+
+    openPopup(bigPicture, pressEscapeHandler);
   };
 
   return {

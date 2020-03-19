@@ -1,12 +1,10 @@
 'use strict';
 
 window.comments = (function () {
-  // временно скрывает кол-во комментариев
-  var socialCommentCount = document.querySelector('.social__comment-count');
-  socialCommentCount.classList.add('hidden');
-  var commentsLoader = document.querySelector('.comments-loader');
-  commentsLoader.classList.add('hidden');
+  var LIMIT_COMMENTS = 5;
 
+  var socialCommentCount = document.querySelector('.social__comment-count');
+  var commentsLoader = document.querySelector('.comments-loader');
 
   var socialComments = document.querySelector('.social__comments');
   var socialComment = document.querySelector('.social__comment');
@@ -24,19 +22,46 @@ window.comments = (function () {
     return commentsElement;
   };
 
-  var renderComments = function (comments) {
-    var fragment = document.createDocumentFragment();
+  var renderCountComments = function (current, total) {
+    socialCommentCount.innerHTML = current + ' из ' + '<span class="comments-count">' + total + '</span>' + ' комментариев';
+  };
 
-    for (var i = 0; i < comments.length; i++) {
-      var comment = comments[i];
-      var commentElement = createComments(comment);
-      fragment.appendChild(commentElement);
+  var renderComments = function (comments) {
+    var countComments = comments.length;
+    var countShown = 0;
+    socialComments.innerHTML = '';
+
+    if (countComments > LIMIT_COMMENTS) {
+      commentsLoader.classList.remove('hidden');
     }
 
-    socialComments.innerHTML = '';
-    socialComments.appendChild(fragment);
+    var appendMoreComments = function () {
+      var countRender = LIMIT_COMMENTS;
 
-    // socialComments.replaceChild(fragment, socialComment);
+      if (countShown + countRender > countComments) {
+        countRender = countComments - countShown;
+      }
+
+      var fragment = document.createDocumentFragment();
+      for (var i = countShown; i < countShown + countRender; i++) {
+        var comment = comments[i];
+        var commentElement = createComments(comment);
+        fragment.appendChild(commentElement);
+      }
+
+      socialComments.appendChild(fragment);
+      countShown += countRender;
+      renderCountComments(countShown, countComments);
+
+      if (countShown === countComments) {
+        commentsLoader.classList.add('hidden');
+        commentsLoader.removeEventListener('click', appendMoreComments);
+      }
+    };
+
+    appendMoreComments();
+
+    commentsLoader.addEventListener('click', appendMoreComments);
   };
 
   return {
