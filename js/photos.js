@@ -9,6 +9,7 @@ window.photos = (function () {
   var getPhotos = window.data.getPhotos;
   var renderError = window.errors.renderError;
   var renderBigPhoto = window.bigPhoto.renderBigPhoto;
+  var filter = window.photosFilter.filter;
 
   var createPhotoElement = function (photo) {
     var photoElement = pictureTemplate.cloneNode(true);
@@ -25,6 +26,9 @@ window.photos = (function () {
     return photoElement;
   };
 
+  var photosElement = document.createElement('DIV');
+  pictures.appendChild(photosElement);
+
   var renderPhotos = function (photos) {
     var fragment = document.createDocumentFragment();
 
@@ -38,7 +42,9 @@ window.photos = (function () {
       fragment.appendChild(imageElement);
     }
 
-    pictures.appendChild(fragment);
+    // TODO реализовать очищение старых фотографий
+    photosElement.innerHTML = '';
+    photosElement.appendChild(fragment);
 
     var renderBigPhotoByPictureElement = function (picture) {
       var url = picture.getAttribute('src');
@@ -66,9 +72,13 @@ window.photos = (function () {
     document.addEventListener('keydown', pressEnterHandler);
   };
 
+  var filterHandler = function (filteredPhotos) {
+    renderPhotos(filteredPhotos);
+  };
+
   var successHandler = function (data) {
     var photos = data;
-    renderPhotos(photos);
+    filter(photos, filterHandler);
   };
 
   var errorHandler = function (err) {
