@@ -14,21 +14,24 @@ window.form = (function () {
   var renderError = window.errors.renderError;
   var renderSuccess = window.success.renderSuccess;
   var getSlider = window.slider.getSlider;
+  var initScale = window.scale.initScale;
 
   var uploadForm = document.querySelector('.img-upload__form');
   var uploadImgOverlay = uploadForm.querySelector('.img-upload__overlay');
   var uploadInput = uploadForm.querySelector('.img-upload__input');
   var uploadClose = uploadForm.querySelector('.img-upload__cancel');
   var buttonSubmit = uploadForm.querySelector('.img-upload__submit');
-
   var effectLevel = document.querySelector('.effect-level');
+  var scaleElement = uploadForm.querySelector('.scale');
+
+  var scale = initScale(scaleElement);
 
   var pressEscapeHandler = function (evt) {
     if (evt.key === ESC_KEY && !isElementPreventEscape(document.activeElement)) {
-      closePopup(uploadImgOverlay, pressEscapeHandler);
-      uploadForm.reset();
+      closePopupForm();
     }
   };
+
   var isElementPreventEscape = function (element) {
     if (element.tagName === 'INPUT' && element.name === 'hashtags') {
       return true;
@@ -44,8 +47,15 @@ window.form = (function () {
   var openPopupForm = function () {
     setEffect(DEFAULT_EFFECT);
     effectLevel.classList.add('hidden');
+    scale.reset();
     openPopup(uploadImgOverlay, pressEscapeHandler);
     buttonSubmit.removeAttribute('disabled');
+  };
+
+  var closePopupForm = function () {
+    closePopup(uploadImgOverlay, pressEscapeHandler);
+    scale.remove();
+    uploadForm.reset();
   };
 
   uploadInput.addEventListener('change', function (evt) {
@@ -56,17 +66,18 @@ window.form = (function () {
   });
 
   uploadClose.addEventListener('click', function () {
-    closePopup(uploadImgOverlay, pressEscapeHandler);
+    closePopupForm();
   });
 
   uploadForm.addEventListener('change', function (evt) {
     if (evt.target.name === 'effect') {
       var effect = evt.target.value;
 
+      // TODO вынести создание слайдера из обработчика
       var changeHandler = function (currentPercent) {
         applyEffect(currentPercent, effect);
       };
-      var slider = getSlider(effectLevel, changeHandler);
+      var slider = initSlider(effectLevel, changeHandler);
 
       if (effect === 'none') {
         slider.hideSlider();
@@ -113,5 +124,4 @@ window.form = (function () {
     post(UPLOAD_URL, formData, successHahdler, errorHandler);
     evt.preventDefault();
   });
-
 })();
