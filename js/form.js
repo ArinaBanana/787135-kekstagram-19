@@ -13,7 +13,7 @@ window.form = (function () {
   var post = window.http.post;
   var renderError = window.errors.renderError;
   var renderSuccess = window.success.renderSuccess;
-  var getSlider = window.slider.getSlider;
+  var initSlider = window.slider.initSlider;
   var initScale = window.scale.initScale;
 
   var uploadForm = document.querySelector('.img-upload__form');

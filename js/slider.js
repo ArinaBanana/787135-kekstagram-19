@@ -1,7 +1,7 @@
 'use strict';
 
 window.slider = (function () {
-  var getSlider = function (effectLevel, changeHandler) {
+  var initSlider = function (effectLevel, changeHandler) {
     var sliderRange = effectLevel.querySelector('.effect-level__line');
     var sliderToggle = effectLevel.querySelector('.effect-level__pin');
     var sliderControlDepth = effectLevel.querySelector('.effect-level__depth');
@@ -68,7 +68,7 @@ window.slider = (function () {
   };
 
   return {
-    getSlider: getSlider
+    initSlider: initSlider
   };
 
 })();
