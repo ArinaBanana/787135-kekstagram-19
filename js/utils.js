@@ -30,13 +30,13 @@ window.utils = (function () {
 
     return function () {
       var parameters = arguments;
-      var self = this;
+
       if (timerId) {
         clearTimeout(timerId);
         timerId = null;
       }
       timerId = setTimeout(function () {
-        handler.apply(self, parameters);
+        handler.apply(null, parameters);
       }, interval);
     };
   };
