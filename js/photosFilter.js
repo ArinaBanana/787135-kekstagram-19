@@ -1,10 +1,13 @@
 'use strict';
 
 window.photosFilter = (function () {
+  var DEBOUNCE_INTERVAL = 500;
+
   var imgFilters = document.querySelector('.img-filters');
   var form = imgFilters.querySelector('.img-filters__form');
 
   var getRandomNumber = window.utils.getRandomNumber;
+  var debounce = window.utils.debounce;
 
   var Filters = {
     DEFAULT: function (photos) {
@@ -43,39 +46,41 @@ window.photosFilter = (function () {
     }
   };
 
-  var handler = null;
-  var photosList = null;
 
-  var filter = function (photos, filterHandler) {
-    handler = filterHandler;
-    photosList = photos;
+  var initFilter = function (photos, filterHandler) {
 
-    var getFilteredPhotos = Filters.DEFAULT;
-    filterHandler(getFilteredPhotos(photos));
+    var getDefaultFilteredPhotos = Filters.DEFAULT;
+    filterHandler(getDefaultFilteredPhotos(photos));
+    imgFilters.classList.remove('img-filters--inactive');
+
+    var doFilter = debounce(function (filterName) {
+      var getFilteredPhotos = Filters[filterName];
+      var filteredPhotos = getFilteredPhotos(photos);
+
+      filterHandler(filteredPhotos);
+    }, DEBOUNCE_INTERVAL);
+
+    var clickHandler = function (evt) {
+      var buttons = form.querySelectorAll('.img-filters__button');
+
+      for (var i = 0; i < buttons.length; i++) {
+        var button = buttons[i];
+        button.classList.remove('img-filters__button--active');
+      }
+
+      if (evt.target.type === 'button') {
+        evt.target.classList.add('img-filters__button--active');
+      }
+
+      var key = evt.target.id.replace('filter-', '').toUpperCase();
+      doFilter(key);
+    };
+
+    form.addEventListener('click', clickHandler);
   };
 
-  form.addEventListener('click', function (evt) {
-    var buttons = evt.currentTarget.querySelectorAll('.img-filters__button');
-
-    for (var i = 0; i < buttons.length; i++) {
-      var button = buttons[i];
-      button.classList.remove('img-filters__button--active');
-    }
-
-    evt.target.classList.add('img-filters__button--active');
-
-    var key = evt.target.id.replace('filter-', '').toUpperCase();
-    var getFilteredPhotos = Filters[key];
-
-    var photos = getFilteredPhotos(photosList);
-
-    handler(photos);
-  });
-
-  imgFilters.classList.remove('img-filters--inactive');
-
   return {
-    filter: filter
+    initFilter: initFilter
   };
 
 })();

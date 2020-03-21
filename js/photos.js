@@ -9,7 +9,7 @@ window.photos = (function () {
   var getPhotos = window.data.getPhotos;
   var renderError = window.errors.renderError;
   var renderBigPhoto = window.bigPhoto.renderBigPhoto;
-  var filter = window.photosFilter.filter;
+  var initFilter = window.photosFilter.initFilter;
 
   var createPhotoElement = function (photo) {
     var photoElement = pictureTemplate.cloneNode(true);
@@ -82,7 +82,7 @@ window.photos = (function () {
 
   var successHandler = function (data) {
     var photos = data;
-    filter(photos, filterHandler);
+    initFilter(photos, filterHandler);
   };
 
   var errorHandler = function (err) {
