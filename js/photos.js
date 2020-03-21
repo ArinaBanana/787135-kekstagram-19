@@ -26,10 +26,16 @@ window.photos = (function () {
     return photoElement;
   };
 
-  var photosElement = document.createElement('DIV');
-  pictures.appendChild(photosElement);
+  var resetPictures = function () {
+    var picturesList = pictures.querySelectorAll('.picture');
+
+    picturesList.forEach(function (picture) {
+      pictures.removeChild(picture);
+    });
+  };
 
   var renderPhotos = function (photos) {
+    resetPictures();
     var fragment = document.createDocumentFragment();
 
     var objPhotos = {};
@@ -42,9 +48,7 @@ window.photos = (function () {
       fragment.appendChild(imageElement);
     }
 
-    // TODO реализовать очищение старых фотографий
-    photosElement.innerHTML = '';
-    photosElement.appendChild(fragment);
+    pictures.appendChild(fragment);
 
     var renderBigPhotoByPictureElement = function (picture) {
       var url = picture.getAttribute('src');
