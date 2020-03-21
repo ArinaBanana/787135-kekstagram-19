@@ -34,9 +34,7 @@ window.photosFilter = (function () {
       return result;
     },
     DISCUSSED: function (photos) {
-      var copiedPhotos = photos.map(function (photo) {
-        return photo;
-      });
+      var copiedPhotos = photos.slice();
 
       copiedPhotos.sort(function (photoA, photoB) {
         return photoB.comments.length - photoA.comments.length;
@@ -63,10 +61,9 @@ window.photosFilter = (function () {
     var clickHandler = function (evt) {
       var buttons = form.querySelectorAll('.img-filters__button');
 
-      for (var i = 0; i < buttons.length; i++) {
-        var button = buttons[i];
+      buttons.forEach(function (button) {
         button.classList.remove('img-filters__button--active');
-      }
+      });
 
       if (evt.target.type === 'button') {
         evt.target.classList.add('img-filters__button--active');

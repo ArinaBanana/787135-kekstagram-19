@@ -65,11 +65,9 @@ window.photos = (function () {
     pictures.addEventListener('click', openClickHandler);
 
     var pressEnterHandler = function (evt) {
-      if (evt.key === ENTER_KEY) {
-        if (evt.target.tagName === 'A' && evt.target.classList.contains('picture')) {
-          var picture = evt.target.querySelector('.picture__img');
-          renderBigPhotoByPictureElement(picture);
-        }
+      if (evt.key === ENTER_KEY && evt.target.tagName === 'A' && evt.target.classList.contains('picture')) {
+        var picture = evt.target.querySelector('.picture__img');
+        renderBigPhotoByPictureElement(picture);
       }
     };
 

@@ -50,7 +50,7 @@ window.scale = (function () {
     };
 
     var reset = function () {
-      applyScale(100);
+      applyScale(ValueScale.MAX);
     };
 
     scaleControlSmaller.addEventListener('click', decrementScale);

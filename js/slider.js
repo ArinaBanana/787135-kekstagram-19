@@ -1,6 +1,8 @@
 'use strict';
 
 window.slider = (function () {
+  var DEFAULT_VALUE_POSITION = 1;
+
   var initSlider = function (effectLevel) {
     var sliderRange = effectLevel.querySelector('.effect-level__line');
     var sliderToggle = effectLevel.querySelector('.effect-level__pin');
@@ -24,7 +26,7 @@ window.slider = (function () {
     };
 
     var setDefaultPositionToggle = function () {
-      setValue(1);
+      setValue(DEFAULT_VALUE_POSITION);
     };
 
     var showSlider = function () {

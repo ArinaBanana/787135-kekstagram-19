@@ -1,7 +1,13 @@
 'use strict';
 
 window.http = (function () {
-  var errorMessages = window.errors.errorMessages;
+  var StatusCode = {
+    OK: 200,
+    NOT_FOUND: 404,
+    SERVER_ERROR: 500
+  };
+
+  var ErrorMessages = window.errors.ErrorMessages;
 
   var getXhr = function (success, error) {
     var xhr = new XMLHttpRequest();
@@ -9,23 +15,23 @@ window.http = (function () {
 
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
-        case 200:
+        case StatusCode.OK:
           return success(xhr.response);
-        case 404:
-          return error(errorMessages.notFound);
-        case 500:
-          return error(errorMessages.serverError);
+        case StatusCode.NOT_FOUND:
+          return error(ErrorMessages.NOT_FOUND);
+        case StatusCode.SERVER_ERROR:
+          return error(ErrorMessages.SERVER_ERROR);
         default:
-          return error(errorMessages.unknown);
+          return error(ErrorMessages.UNKNOWN);
       }
     });
 
     xhr.addEventListener('error', function () {
-      return error(errorMessages.connectionError);
+      return error(ErrorMessages.CONNECTION_ERROR);
     });
 
     xhr.addEventListener('timeout', function () {
-      return error(errorMessages.timeout + xhr.timeout + 'ms');
+      return error(ErrorMessages.timeout + xhr.timeout + 'ms');
     });
 
     xhr.timeout = 10000;
