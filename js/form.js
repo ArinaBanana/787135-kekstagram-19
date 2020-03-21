@@ -21,9 +21,11 @@ window.form = (function () {
   var uploadInput = uploadForm.querySelector('.img-upload__input');
   var uploadClose = uploadForm.querySelector('.img-upload__cancel');
   var buttonSubmit = uploadForm.querySelector('.img-upload__submit');
-  var effectLevel = document.querySelector('.effect-level');
-  var scaleElement = uploadForm.querySelector('.scale');
 
+  var effectLevel = document.querySelector('.effect-level');
+  var slider = initSlider(effectLevel);
+
+  var scaleElement = uploadForm.querySelector('.scale');
   var scale = initScale(scaleElement);
 
   var pressEscapeHandler = function (evt) {
@@ -73,11 +75,11 @@ window.form = (function () {
     if (evt.target.name === 'effect') {
       var effect = evt.target.value;
 
-      // TODO вынести создание слайдера из обработчика
       var changeHandler = function (currentPercent) {
         applyEffect(currentPercent, effect);
       };
-      var slider = initSlider(effectLevel, changeHandler);
+
+      slider.registerHandler(changeHandler);
 
       if (effect === 'none') {
         slider.hideSlider();
@@ -87,7 +89,6 @@ window.form = (function () {
 
       slider.setDefaultPositionToggle();
       setEffect(effect);
-
     }
   });
 

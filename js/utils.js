@@ -25,9 +25,26 @@ window.utils = (function () {
     return true;
   };
 
+  var debounce = function (handler, interval) {
+    var timerId = null;
+
+    return function () {
+      var parameters = arguments;
+
+      if (timerId) {
+        clearTimeout(timerId);
+        timerId = null;
+      }
+      timerId = setTimeout(function () {
+        handler.apply(null, parameters);
+      }, interval);
+    };
+  };
+
   return {
     getRandomNumber: getRandomNumber,
     hasDuplicate: hasDuplicate,
+    debounce: debounce,
     escKey: ESC_KEY,
     entKey: ENTER_KEY
   };

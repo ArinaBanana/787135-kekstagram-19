@@ -1,12 +1,18 @@
 'use strict';
 
 window.slider = (function () {
-  var initSlider = function (effectLevel, changeHandler) {
+  var initSlider = function (effectLevel) {
     var sliderRange = effectLevel.querySelector('.effect-level__line');
     var sliderToggle = effectLevel.querySelector('.effect-level__pin');
     var sliderControlDepth = effectLevel.querySelector('.effect-level__depth');
 
     var sliderInputValue = effectLevel.querySelector('.effect-level__value');
+
+    var changeHandler = null;
+
+    var registerHandler = function (handler) {
+      changeHandler = handler;
+    };
 
     var setValue = function (position) {
       var value = (sliderRange.offsetWidth * position) + 'px';
@@ -63,7 +69,8 @@ window.slider = (function () {
     return {
       setDefaultPositionToggle: setDefaultPositionToggle,
       showSlider: showSlider,
-      hideSlider: hideSlider
+      hideSlider: hideSlider,
+      registerHandler: registerHandler
     };
   };
 
