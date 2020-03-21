@@ -22,6 +22,7 @@ window.form = (function () {
   var buttonSubmit = uploadForm.querySelector('.img-upload__submit');
 
   var effectLevel = document.querySelector('.effect-level');
+  var slider = getSlider(effectLevel);
 
   var pressEscapeHandler = function (evt) {
     if (evt.key === ESC_KEY && !isElementPreventEscape(document.activeElement)) {
@@ -66,7 +67,8 @@ window.form = (function () {
       var changeHandler = function (currentPercent) {
         applyEffect(currentPercent, effect);
       };
-      var slider = getSlider(effectLevel, changeHandler);
+
+      slider.registerHandler(changeHandler);
 
       if (effect === 'none') {
         slider.hideSlider();
@@ -76,7 +78,6 @@ window.form = (function () {
 
       slider.setDefaultPositionToggle();
       setEffect(effect);
-
     }
   });
 
