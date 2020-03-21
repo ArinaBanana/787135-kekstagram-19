@@ -26,12 +26,10 @@ window.errors = (function () {
   };
 
   var renderError = function (error, actionHandler) {
-    var fragment = document.createDocumentFragment();
     var element = createErrorMessage(error);
     var actionButton = element.querySelector('.error__button');
 
-    fragment.appendChild(element);
-    main.appendChild(fragment);
+    main.appendChild(element);
 
     var removeError = function () {
       actionButton.removeEventListener('click', actionButtonHandler);

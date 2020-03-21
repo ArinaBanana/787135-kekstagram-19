@@ -44,7 +44,6 @@ window.photosFilter = (function () {
     }
   };
 
-
   var initFilter = function (photos, filterHandler) {
 
     var getDefaultFilteredPhotos = Filters.DEFAULT;

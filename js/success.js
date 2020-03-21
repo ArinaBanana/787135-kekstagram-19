@@ -7,13 +7,10 @@ window.success = (function () {
   var main = document.querySelector('main');
 
   var renderSuccess = function () {
-    var fragment = document.createDocumentFragment();
     var successElement = successTemplate.cloneNode(true);
     var actionButton = successElement.querySelector('.success__button');
 
-    fragment.appendChild(successElement);
-    main.appendChild(fragment);
-
+    main.appendChild(successElement);
 
     var removeSuccess = function () {
       successElement.removeEventListener('click', outsideClickHandler);
