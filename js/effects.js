@@ -1,40 +1,46 @@
 'use strict';
 
 window.effects = (function () {
-  var effects = {
-    none: {
+  var Effects = {
+    NONE: {
       EFFECT: null
     },
-    chrome: {
+    CHROME: {
       EFFECT: 'grayscale',
       UNIT: 'float',
       MIN: 0,
       MAX: 1
     },
-    sepia: {
+    SEPIA: {
       EFFECT: 'sepia',
       UNIT: 'float',
       MIN: 0,
       MAX: 1
     },
-    marvin: {
+    MARVIN: {
       EFFECT: 'invert',
       UNIT: 'percent',
       MIN: 0,
       MAX: 100
     },
-    phobos: {
+    PHOBOS: {
       EFFECT: 'blur',
       UNIT: 'pixel',
       MIN: 0,
       MAX: 3
     },
-    heat: {
+    HEAT: {
       EFFECT: 'brightness',
       UNIT: 'float',
       MIN: 1,
       MAX: 3
     }
+  };
+
+  var ValueUnit = {
+    FLOAT: 'float',
+    PERCENT: 'percent',
+    PIXEL: 'pixel'
   };
 
   var effectPicture = document.querySelector('.img-upload__preview');
@@ -54,13 +60,13 @@ window.effects = (function () {
     var value = getEffectValue(effect);
 
     switch (value.UNIT) {
-      case 'float':
+      case ValueUnit.FLOAT:
         effectPicture.style.filter = value.EFFECT + '(' + value.MAX + ')';
         return;
-      case 'percent':
+      case ValueUnit.PERCENT:
         effectPicture.style.filter = value.EFFECT + '(' + value.MAX + '%)';
         return;
-      case 'pixel':
+      case ValueUnit.PIXEL:
         effectPicture.style.filter = value.EFFECT + '(' + value.MAX + 'px)';
         return;
       default:
@@ -74,7 +80,7 @@ window.effects = (function () {
   };
 
   var getEffectValue = function (effect) {
-    return effects[effect];
+    return Effects[effect];
   };
 
   var applyEffect = function (currentPercent, effect) {
@@ -84,13 +90,13 @@ window.effects = (function () {
     var effectValue = getDepthValue(currentPercent, min, max);
 
     switch (value.UNIT) {
-      case 'float':
+      case ValueUnit.FLOAT:
         effectPicture.style.filter = value.EFFECT + '(' + effectValue + ')';
         return;
-      case 'percent':
+      case ValueUnit.PERCENT:
         effectPicture.style.filter = value.EFFECT + '(' + effectValue + '%)';
         return;
-      case 'pixel':
+      case ValueUnit.PIXEL:
         effectPicture.style.filter = value.EFFECT + '(' + effectValue + 'px)';
         return;
       default:

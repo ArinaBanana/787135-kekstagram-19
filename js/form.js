@@ -1,7 +1,7 @@
 'use strict';
 
 window.form = (function () {
-  var DEFAULT_EFFECT = 'none';
+  var DEFAULT_EFFECT = 'NONE';
   var UPLOAD_URL = 'https://js.dump.academy/kekstagram';
   var ESC_KEY = window.utils.escKey;
 
@@ -60,11 +60,8 @@ window.form = (function () {
     uploadForm.reset();
   };
 
-  uploadInput.addEventListener('change', function (evt) {
-    var isFile = evt.target.files.length === 1;
-    if (isFile) {
-      openPopupForm();
-    }
+  uploadInput.addEventListener('change', function () {
+    openPopupForm();
   });
 
   uploadClose.addEventListener('click', function () {
@@ -73,7 +70,7 @@ window.form = (function () {
 
   uploadForm.addEventListener('change', function (evt) {
     if (evt.target.name === 'effect') {
-      var effect = evt.target.value;
+      var effect = evt.target.value.toUpperCase();
 
       var changeHandler = function (currentPercent) {
         applyEffect(currentPercent, effect);

@@ -6,26 +6,17 @@ window.success = (function () {
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var main = document.querySelector('main');
 
-  var createSuccessMessage = function () {
-    var successElement = successTemplate.cloneNode(true);
-
-    return successElement;
-  };
-
   var renderSuccess = function () {
-    var fragment = document.createDocumentFragment();
-    var element = createSuccessMessage();
-    var actionButton = element.querySelector('.success__button');
+    var successElement = successTemplate.cloneNode(true);
+    var actionButton = successElement.querySelector('.success__button');
 
-    fragment.appendChild(element);
-    main.appendChild(fragment);
-
+    main.appendChild(successElement);
 
     var removeSuccess = function () {
-      element.removeEventListener('click', outsideClickHandler);
+      successElement.removeEventListener('click', outsideClickHandler);
       document.removeEventListener('keydown', escapeKeyHandler);
       actionButton.removeEventListener('click', actionButtonHandler);
-      element.remove();
+      successElement.remove();
     };
 
     var escapeKeyHandler = function (evt) {
@@ -46,7 +37,7 @@ window.success = (function () {
 
     actionButton.addEventListener('click', actionButtonHandler);
     document.addEventListener('keydown', escapeKeyHandler);
-    element.addEventListener('click', outsideClickHandler);
+    successElement.addEventListener('click', outsideClickHandler);
   };
 
   return {

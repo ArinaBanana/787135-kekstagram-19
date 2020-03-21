@@ -6,12 +6,12 @@ window.errors = (function () {
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var main = document.querySelector('main');
 
-  var errorMessages = {
-    notFound: 'Не найдено',
-    serverError: 'Внутренняя ошибка сервера',
-    timeout: 'Запрос не успел выполниться за',
-    connectionError: 'Произошла ошибка соединения',
-    unknown: 'Неизвестная ошибка'
+  var ErrorMessages = {
+    NOT_FOUND: 'Не найдено',
+    SERVER_ERROR: 'Внутренняя ошибка сервера',
+    TIMEOUT: 'Запрос не успел выполниться за',
+    CONNECTION_ERROR: 'Произошла ошибка соединения',
+    UNKNOWN: 'Неизвестная ошибка'
   };
 
   var createErrorMessage = function (error) {
@@ -26,12 +26,10 @@ window.errors = (function () {
   };
 
   var renderError = function (error, actionHandler) {
-    var fragment = document.createDocumentFragment();
     var element = createErrorMessage(error);
     var actionButton = element.querySelector('.error__button');
 
-    fragment.appendChild(element);
-    main.appendChild(fragment);
+    main.appendChild(element);
 
     var removeError = function () {
       actionButton.removeEventListener('click', actionButtonHandler);
@@ -63,7 +61,7 @@ window.errors = (function () {
   };
 
   return {
-    errorMessages: errorMessages,
+    ErrorMessages: ErrorMessages,
     renderError: renderError
   };
 
