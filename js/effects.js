@@ -76,7 +76,7 @@ window.effects = (function () {
 
   var getDepthValue = function (currentPercent, min, max) {
     var rangeOfNumbers = max - min;
-    return currentPercent * rangeOfNumbers;
+    return currentPercent * rangeOfNumbers + min;
   };
 
   var getEffectValue = function (effect) {
