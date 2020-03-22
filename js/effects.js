@@ -1,6 +1,12 @@
 'use strict';
 
 window.effects = (function () {
+  var ValueUnit = {
+    FLOAT: 'float',
+    PERCENT: 'percent',
+    PIXEL: 'pixel'
+  };
+
   var effectsSettings = {
     none: {
       effect: null
@@ -35,12 +41,6 @@ window.effects = (function () {
       min: 1,
       max: 3
     }
-  };
-
-  var ValueUnit = {
-    FLOAT: 'float',
-    PERCENT: 'percent',
-    PIXEL: 'pixel'
   };
 
   var effectPicture = document.querySelector('.img-upload__preview');
