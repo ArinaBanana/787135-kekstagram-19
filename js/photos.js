@@ -9,7 +9,7 @@ window.photos = (function () {
   var getPhotos = window.data.getPhotos;
   var renderError = window.errors.renderError;
   var renderBigPhoto = window.bigPhoto.renderBigPhoto;
-  var initFilter = window.photosFilter.initFilter;
+  var filter = window.photosFilter;
 
   var createPhotoElement = function (photo) {
     var photoElement = pictureTemplate.cloneNode(true);
@@ -54,6 +54,7 @@ window.photos = (function () {
       var url = picture.getAttribute('src');
       var clickedPhoto = objPhotos[url];
       renderBigPhoto(clickedPhoto);
+      filter.hide();
     };
 
     var openClickHandler = function (evt) {
@@ -80,7 +81,7 @@ window.photos = (function () {
 
   var successHandler = function (data) {
     var photos = data;
-    initFilter(photos, filterHandler);
+    filter.init(photos, filterHandler);
   };
 
   var errorHandler = function (err) {

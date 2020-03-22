@@ -43,8 +43,7 @@ window.photosFilter = (function () {
     }
   };
 
-  var initFilter = function (photos, filterHandler) {
-
+  var init = function (photos, filterHandler) {
     var getDefaultFilteredPhotos = Filters.DEFAULT;
     filterHandler(getDefaultFilteredPhotos(photos));
     imgFilters.classList.remove('img-filters--inactive');
@@ -75,7 +74,7 @@ window.photosFilter = (function () {
   };
 
   return {
-    initFilter: initFilter
+    init: init
   };
 
 })();
