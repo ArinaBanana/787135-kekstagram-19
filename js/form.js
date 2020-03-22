@@ -35,15 +35,10 @@ window.form = (function () {
   };
 
   var isElementPreventEscape = function (element) {
-    if (element.tagName === 'INPUT' && element.name === 'hashtags') {
-      return true;
-    }
+    var isInputHashtags = element.tagName === 'INPUT' && element.name === 'hashtags';
+    var isTextareaDescription = element.tagName === 'TEXTAREA' && element.name === 'description';
 
-    if (element.tagName === 'TEXTAREA' && element.name === 'description') {
-      return true;
-    }
-
-    return false;
+    return isInputHashtags || isTextareaDescription;
   };
 
   var openPopupForm = function () {
