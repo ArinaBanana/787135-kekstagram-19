@@ -7,7 +7,7 @@ window.http = (function () {
     SERVER_ERROR: 500
   };
 
-  var ErrorMessages = window.errors.ErrorMessages;
+  var ErrorMessages = window.errors.Messages;
 
   var getXhr = function (successHandler, errorHandler) {
     var xhr = new XMLHttpRequest();
