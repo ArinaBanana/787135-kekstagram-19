@@ -3,7 +3,7 @@
 window.slider = (function () {
   var DEFAULT_VALUE_POSITION = 1;
 
-  var initSlider = function (effectLevel) {
+  var init = function (effectLevel) {
     var sliderRange = effectLevel.querySelector('.effect-level__line');
     var sliderToggle = effectLevel.querySelector('.effect-level__pin');
     var sliderControlDepth = effectLevel.querySelector('.effect-level__depth');
@@ -29,11 +29,11 @@ window.slider = (function () {
       setValue(DEFAULT_VALUE_POSITION);
     };
 
-    var showSlider = function () {
+    var show = function () {
       effectLevel.classList.remove('hidden');
     };
 
-    var hideSlider = function () {
+    var hide = function () {
       effectLevel.classList.add('hidden');
     };
 
@@ -74,15 +74,15 @@ window.slider = (function () {
 
     return {
       setDefaultPositionToggle: setDefaultPositionToggle,
-      showSlider: showSlider,
-      hideSlider: hideSlider,
+      show: show,
+      hide: hide,
       registerHandler: registerHandler,
       getIsHidden: getIsHidden
     };
   };
 
   return {
-    initSlider: initSlider
+    init: init
   };
 
 })();
