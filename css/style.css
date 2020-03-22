@@ -751,6 +751,10 @@ main {
   border-radius: 5px;
 }
 
+.text__hashtags:invalid {
+  outline: 5px auto red;
+}
+
 .text__description {
   width: 450px;
   height: 100px;
