@@ -15,12 +15,8 @@ window.photosFilter = (function () {
       return photos;
     },
     RANDOM: function (photos) {
-      var allIndexes = [];
+      var allIndexes = Object.keys(photos);
       var result = [];
-
-      for (var i = 0; i < photos.length; i++) {
-        allIndexes.push(i);
-      }
 
       for (var j = 0; j < COUNT; j++) {
         var randomIndex = getRandomNumber(0, allIndexes.length);
