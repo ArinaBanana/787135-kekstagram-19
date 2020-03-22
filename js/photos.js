@@ -1,7 +1,7 @@
 'use strict';
 
 window.photos = (function () {
-  var ENTER_KEY = window.utils.entKey;
+  var DEBOUNCE_INTERVAL = 500;
 
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var pictures = document.querySelector('.pictures');
@@ -10,6 +10,7 @@ window.photos = (function () {
   var errors = window.errors;
   var bigPhoto = window.bigPhoto;
   var filter = window.photosFilter;
+  var utils = window.utils;
 
   var createPhotoElement = function (photo) {
     var photoElement = pictureTemplate.cloneNode(true);
@@ -40,14 +41,6 @@ window.photos = (function () {
   var render = function (photos) {
     reset();
 
-    if (openClickHandler) {
-      pictures.removeEventListener('click', openClickHandler);
-    }
-
-    if (pressEnterHandler) {
-      document.removeEventListener('keydown', pressEnterHandler);
-    }
-
     var fragment = document.createDocumentFragment();
 
     var objPhotos = {};
@@ -62,13 +55,9 @@ window.photos = (function () {
     pictures.appendChild(fragment);
 
     var renderBigPhotoByPictureElement = function (picture) {
-      try {
-        var url = picture.getAttribute('src');
-        var clickedPhoto = objPhotos[url];
-        bigPhoto.render(clickedPhoto, filter.show);
-      } catch (e) {
-        // обработка ошибки
-      }
+      var url = picture.getAttribute('src');
+      var clickedPhoto = objPhotos[url];
+      bigPhoto.render(clickedPhoto, filter.show);
     };
 
     openClickHandler = function (evt) {
@@ -80,7 +69,7 @@ window.photos = (function () {
     pictures.addEventListener('click', openClickHandler);
 
     pressEnterHandler = function (evt) {
-      if (evt.key === ENTER_KEY && evt.target.tagName === 'A' && evt.target.classList.contains('picture')) {
+      if (evt.key === utils.entKey && evt.target.tagName === 'A' && evt.target.classList.contains('picture')) {
         var picture = evt.target.querySelector('.picture__img');
         renderBigPhotoByPictureElement(picture);
       }
@@ -89,8 +78,18 @@ window.photos = (function () {
     document.addEventListener('keydown', pressEnterHandler);
   };
 
+  var debouncedRender = utils.debounce(render, DEBOUNCE_INTERVAL);
+
   var filterHandler = function (filteredPhotos) {
-    render(filteredPhotos);
+    if (openClickHandler) {
+      pictures.removeEventListener('click', openClickHandler);
+    }
+
+    if (pressEnterHandler) {
+      document.removeEventListener('keydown', pressEnterHandler);
+    }
+
+    debouncedRender(filteredPhotos);
   };
 
   var successHandler = function (photos) {

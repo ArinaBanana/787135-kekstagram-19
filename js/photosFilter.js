@@ -1,7 +1,6 @@
 'use strict';
 
 window.photosFilter = (function () {
-  var DEBOUNCE_INTERVAL = 500;
   var COUNT = 10;
 
   var utils = window.utils;
@@ -43,12 +42,12 @@ window.photosFilter = (function () {
     filterHandler(getDefaultFilteredPhotos(photos));
     imgFilters.classList.remove('img-filters--inactive');
 
-    var doFilter = utils.debounce(function (filterName) {
+    var doFilter = function (filterName) {
       var getFilteredPhotos = Filters[filterName];
       var filteredPhotos = getFilteredPhotos(photos);
 
       filterHandler(filteredPhotos);
-    }, DEBOUNCE_INTERVAL);
+    };
 
     var clickHandler = function (evt) {
       var buttons = form.querySelectorAll('.img-filters__button');
