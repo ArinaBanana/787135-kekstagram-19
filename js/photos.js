@@ -52,13 +52,12 @@ window.photos = (function () {
 
     var objPhotos = {};
 
-    for (var i = 0; i < photos.length; i++) {
-      var photo = photos[i];
+    photos.forEach(function (photo) {
       objPhotos[photo.url] = photo;
 
       var imageElement = createPhotoElement(photo);
       fragment.appendChild(imageElement);
-    }
+    });
 
     pictures.appendChild(fragment);
 
