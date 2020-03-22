@@ -1,7 +1,7 @@
 'use strict';
 
 window.effects = (function () {
-  var effects = {
+  var effectsSettings = {
     none: {
       effect: null
     },
@@ -76,7 +76,7 @@ window.effects = (function () {
   };
 
   var getEffectValue = function (effect) {
-    return effects[effect];
+    return effectsSettings[effect];
   };
 
   var applyEffect = function (currentPercent, effect) {
