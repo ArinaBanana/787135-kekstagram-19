@@ -73,7 +73,7 @@ window.form = (function () {
 
       slider.registerHandler(changeHandler);
 
-      if (effect === 'none') {
+      if (effect === DEFAULT_EFFECT) {
         slider.hideSlider();
       } else {
         slider.showSlider();
