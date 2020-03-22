@@ -1,30 +1,23 @@
 'use strict';
 
 window.photosFilter = (function () {
-  var DEBOUNCE_INTERVAL = 500;
+  var COUNT = 10;
+
+  var utils = window.utils;
 
   var imgFilters = document.querySelector('.img-filters');
   var form = imgFilters.querySelector('.img-filters__form');
-
-  var getRandomNumber = window.utils.getRandomNumber;
-  var debounce = window.utils.debounce;
 
   var Filters = {
     DEFAULT: function (photos) {
       return photos;
     },
     RANDOM: function (photos) {
-      var COUNT = 10;
-
-      var allIndexes = [];
+      var allIndexes = Object.keys(photos);
       var result = [];
 
-      for (var i = 0; i < photos.length; i++) {
-        allIndexes.push(i);
-      }
-
       for (var j = 0; j < COUNT; j++) {
-        var randomIndex = getRandomNumber(0, allIndexes.length);
+        var randomIndex = utils.getRandomNumber(0, allIndexes.length);
         var index = allIndexes[randomIndex];
         allIndexes.splice(randomIndex, 1);
         var photo = photos[index];
@@ -44,24 +37,25 @@ window.photosFilter = (function () {
     }
   };
 
-  var initFilter = function (photos, filterHandler) {
-
+  var init = function (photos, filterHandler) {
     var getDefaultFilteredPhotos = Filters.DEFAULT;
     filterHandler(getDefaultFilteredPhotos(photos));
     imgFilters.classList.remove('img-filters--inactive');
 
-    var doFilter = debounce(function (filterName) {
+    var doFilter = function (filterName) {
       var getFilteredPhotos = Filters[filterName];
       var filteredPhotos = getFilteredPhotos(photos);
 
       filterHandler(filteredPhotos);
-    }, DEBOUNCE_INTERVAL);
+    };
 
     var clickHandler = function (evt) {
       var buttons = form.querySelectorAll('.img-filters__button');
 
       buttons.forEach(function (button) {
-        button.classList.remove('img-filters__button--active');
+        if (button.classList.contains('img-filters__button--active')) {
+          button.classList.remove('img-filters__button--active');
+        }
       });
 
       if (evt.target.type === 'button') {
@@ -76,7 +70,7 @@ window.photosFilter = (function () {
   };
 
   return {
-    initFilter: initFilter
+    init: init
   };
 
 })();

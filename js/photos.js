@@ -1,15 +1,16 @@
 'use strict';
 
 window.photos = (function () {
-  var ENTER_KEY = window.utils.entKey;
+  var DEBOUNCE_INTERVAL = 500;
 
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var pictures = document.querySelector('.pictures');
 
-  var getPhotos = window.data.getPhotos;
-  var renderError = window.errors.renderError;
-  var renderBigPhoto = window.bigPhoto.renderBigPhoto;
-  var initFilter = window.photosFilter.initFilter;
+  var data = window.data;
+  var errors = window.errors;
+  var bigPhoto = window.bigPhoto;
+  var filter = window.photosFilter;
+  var utils = window.utils;
 
   var createPhotoElement = function (photo) {
     var photoElement = pictureTemplate.cloneNode(true);
@@ -26,7 +27,7 @@ window.photos = (function () {
     return photoElement;
   };
 
-  var resetPictures = function () {
+  var reset = function () {
     var picturesList = pictures.querySelectorAll('.picture');
 
     picturesList.forEach(function (picture) {
@@ -34,29 +35,32 @@ window.photos = (function () {
     });
   };
 
-  var renderPhotos = function (photos) {
-    resetPictures();
+  var openClickHandler = null;
+  var pressEnterHandler = null;
+
+  var render = function (photos) {
+    reset();
+
     var fragment = document.createDocumentFragment();
 
     var objPhotos = {};
 
-    for (var i = 0; i < photos.length; i++) {
-      var photo = photos[i];
+    photos.forEach(function (photo) {
       objPhotos[photo.url] = photo;
 
       var imageElement = createPhotoElement(photo);
       fragment.appendChild(imageElement);
-    }
+    });
 
     pictures.appendChild(fragment);
 
     var renderBigPhotoByPictureElement = function (picture) {
       var url = picture.getAttribute('src');
       var clickedPhoto = objPhotos[url];
-      renderBigPhoto(clickedPhoto);
+      bigPhoto.render(clickedPhoto, filter.show);
     };
 
-    var openClickHandler = function (evt) {
+    openClickHandler = function (evt) {
       if (evt.target.tagName === 'IMG' && evt.target.classList.contains('picture__img')) {
         renderBigPhotoByPictureElement(evt.target);
       }
@@ -64,8 +68,8 @@ window.photos = (function () {
 
     pictures.addEventListener('click', openClickHandler);
 
-    var pressEnterHandler = function (evt) {
-      if (evt.key === ENTER_KEY && evt.target.tagName === 'A' && evt.target.classList.contains('picture')) {
+    pressEnterHandler = function (evt) {
+      if (evt.key === utils.entKey && evt.target.tagName === 'A' && evt.target.classList.contains('picture')) {
         var picture = evt.target.querySelector('.picture__img');
         renderBigPhotoByPictureElement(picture);
       }
@@ -74,21 +78,30 @@ window.photos = (function () {
     document.addEventListener('keydown', pressEnterHandler);
   };
 
+  var debouncedRender = utils.debounce(render, DEBOUNCE_INTERVAL);
+
   var filterHandler = function (filteredPhotos) {
-    renderPhotos(filteredPhotos);
+    if (openClickHandler) {
+      pictures.removeEventListener('click', openClickHandler);
+    }
+
+    if (pressEnterHandler) {
+      document.removeEventListener('keydown', pressEnterHandler);
+    }
+
+    debouncedRender(filteredPhotos);
   };
 
-  var successHandler = function (data) {
-    var photos = data;
-    initFilter(photos, filterHandler);
+  var successHandler = function (photos) {
+    filter.init(photos, filterHandler);
   };
 
   var errorHandler = function (err) {
-    renderError({title: err, actionTitle: 'Повторить'}, function () {
-      getPhotos(successHandler, errorHandler);
+    errors.render({title: err, actionTitle: 'Повторить'}, function () {
+      data.getPhotos(successHandler, errorHandler);
     });
   };
 
-  getPhotos(successHandler, errorHandler);
+  data.getPhotos(successHandler, errorHandler);
 
 })();

@@ -2,11 +2,7 @@
 
 window.errors = (function () {
   var ESC_KEY = window.utils.escKey;
-
-  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
-  var main = document.querySelector('main');
-
-  var ErrorMessages = {
+  var Messages = {
     NOT_FOUND: 'Не найдено',
     SERVER_ERROR: 'Внутренняя ошибка сервера',
     TIMEOUT: 'Запрос не успел выполниться за',
@@ -14,7 +10,10 @@ window.errors = (function () {
     UNKNOWN: 'Неизвестная ошибка'
   };
 
-  var createErrorMessage = function (error) {
+  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  var main = document.querySelector('main');
+
+  var createMessage = function (error) {
     var errorElement = errorTemplate.cloneNode(true);
     var errorTitle = errorElement.querySelector('.error__title');
     var actionButton = errorElement.querySelector('.error__button');
@@ -25,13 +24,13 @@ window.errors = (function () {
     return errorElement;
   };
 
-  var renderError = function (error, actionHandler) {
-    var element = createErrorMessage(error);
+  var render = function (error, actionHandler) {
+    var element = createMessage(error);
     var actionButton = element.querySelector('.error__button');
 
     main.appendChild(element);
 
-    var removeError = function () {
+    var remove = function () {
       actionButton.removeEventListener('click', actionButtonHandler);
       document.removeEventListener('keydown', escapeKeyHandler);
       element.removeEventListener('click', outsideClickHandler);
@@ -40,19 +39,19 @@ window.errors = (function () {
 
     var escapeKeyHandler = function (evt) {
       if (evt.key === ESC_KEY) {
-        removeError();
+        remove();
       }
     };
 
     var outsideClickHandler = function (evt) {
       if (evt.target === evt.currentTarget) {
-        removeError();
+        remove();
       }
     };
 
     var actionButtonHandler = function () {
       actionHandler();
-      removeError();
+      remove();
     };
 
     actionButton.addEventListener('click', actionButtonHandler);
@@ -61,8 +60,8 @@ window.errors = (function () {
   };
 
   return {
-    ErrorMessages: ErrorMessages,
-    renderError: renderError
+    Messages: Messages,
+    render: render
   };
 
 })();

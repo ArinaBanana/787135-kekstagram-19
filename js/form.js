@@ -1,32 +1,28 @@
 'use strict';
 
 window.form = (function () {
-  var DEFAULT_EFFECT = 'NONE';
+  var DEFAULT_EFFECT = 'none';
   var UPLOAD_URL = 'https://js.dump.academy/kekstagram';
   var ESC_KEY = window.utils.escKey;
 
-  var closePopup = window.openClosePopup.closePopup;
-  var openPopup = window.openClosePopup.openPopup;
-  var setEffect = window.effects.setEffect;
-  var applyEffect = window.effects.applyEffect;
-  var getHashtagsValidationMessage = window.validation.getHashtagsValidationMessage;
-  var post = window.http.post;
-  var renderError = window.errors.renderError;
-  var renderSuccess = window.success.renderSuccess;
-  var initSlider = window.slider.initSlider;
-  var initScale = window.scale.initScale;
+  var popup = window.openClosePopup;
+  var errors = window.errors;
+  var effects = window.effects;
+  var http = window.http;
+  var success = window.success;
+  var validation = window.validation;
 
   var uploadForm = document.querySelector('.img-upload__form');
+
   var uploadImgOverlay = uploadForm.querySelector('.img-upload__overlay');
   var uploadInput = uploadForm.querySelector('.img-upload__input');
   var uploadClose = uploadForm.querySelector('.img-upload__cancel');
   var buttonSubmit = uploadForm.querySelector('.img-upload__submit');
-
   var effectLevel = document.querySelector('.effect-level');
-  var slider = initSlider(effectLevel);
-
   var scaleElement = uploadForm.querySelector('.scale');
-  var scale = initScale(scaleElement);
+
+  var slider = window.slider.init(effectLevel);
+  var scale = window.scale.init(scaleElement);
 
   var pressEscapeHandler = function (evt) {
     if (evt.key === ESC_KEY && !isElementPreventEscape(document.activeElement)) {
@@ -35,27 +31,22 @@ window.form = (function () {
   };
 
   var isElementPreventEscape = function (element) {
-    if (element.tagName === 'INPUT' && element.name === 'hashtags') {
-      return true;
-    }
+    var isInputHashtags = element.tagName === 'INPUT' && element.name === 'hashtags';
+    var isTextareaDescription = element.tagName === 'TEXTAREA' && element.name === 'description';
 
-    if (element.tagName === 'TEXTAREA' && element.name === 'description') {
-      return true;
-    }
-
-    return false;
+    return isInputHashtags || isTextareaDescription;
   };
 
   var openPopupForm = function () {
-    setEffect(DEFAULT_EFFECT);
+    effects.setEffect(DEFAULT_EFFECT);
     effectLevel.classList.add('hidden');
     scale.reset();
-    openPopup(uploadImgOverlay, pressEscapeHandler);
+    popup.open(uploadImgOverlay, pressEscapeHandler);
     buttonSubmit.removeAttribute('disabled');
   };
 
   var closePopupForm = function () {
-    closePopup(uploadImgOverlay, pressEscapeHandler);
+    popup.close(uploadImgOverlay, pressEscapeHandler);
     scale.remove();
     uploadForm.reset();
   };
@@ -70,22 +61,22 @@ window.form = (function () {
 
   uploadForm.addEventListener('change', function (evt) {
     if (evt.target.name === 'effect') {
-      var effect = evt.target.value.toUpperCase();
+      var effect = evt.target.value;
 
       var changeHandler = function (currentPercent) {
-        applyEffect(currentPercent, effect);
+        effects.applyEffect(currentPercent, effect);
       };
 
       slider.registerHandler(changeHandler);
 
-      if (effect === 'none') {
-        slider.hideSlider();
-      } else {
-        slider.showSlider();
+      if (effect === DEFAULT_EFFECT) {
+        slider.hide();
+      } else if (slider.getIsHidden()) {
+        slider.show();
       }
 
       slider.setDefaultPositionToggle();
-      setEffect(effect);
+      effects.setEffect(effect);
     }
   });
 
@@ -96,7 +87,7 @@ window.form = (function () {
 
       if (hashtagString) {
         var hashtags = hashtagString.split(' ');
-        errorText = getHashtagsValidationMessage(hashtags);
+        errorText = validation.getHashtagsValidationMessage(hashtags);
       }
 
       evt.target.setCustomValidity(errorText);
@@ -104,13 +95,13 @@ window.form = (function () {
   });
 
   var successHahdler = function () {
-    closePopup(uploadImgOverlay, pressEscapeHandler);
+    popup.close(uploadImgOverlay, pressEscapeHandler);
     uploadForm.reset();
-    renderSuccess();
+    success.render();
   };
   var errorHandler = function (err) {
-    closePopup(uploadImgOverlay, pressEscapeHandler);
-    renderError({title: err, actionTitle: 'Загрузить другой файл'}, function () {
+    popup.close(uploadImgOverlay, pressEscapeHandler);
+    errors.render({title: err, actionTitle: 'Загрузить другой файл'}, function () {
       uploadInput.click();
     });
   };
@@ -119,7 +110,7 @@ window.form = (function () {
     buttonSubmit.setAttribute('disabled', 'disabled');
 
     var formData = new FormData(evt.target);
-    post(UPLOAD_URL, formData, successHahdler, errorHandler);
+    http.post(UPLOAD_URL, formData, successHahdler, errorHandler);
     evt.preventDefault();
   });
 })();

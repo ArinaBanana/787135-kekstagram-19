@@ -7,31 +7,31 @@ window.http = (function () {
     SERVER_ERROR: 500
   };
 
-  var ErrorMessages = window.errors.ErrorMessages;
+  var ErrorMessages = window.errors.Messages;
 
-  var getXhr = function (success, error) {
+  var getXhr = function (successHandler, errorHandler) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
         case StatusCode.OK:
-          return success(xhr.response);
+          return successHandler(xhr.response);
         case StatusCode.NOT_FOUND:
-          return error(ErrorMessages.NOT_FOUND);
+          return errorHandler(ErrorMessages.NOT_FOUND);
         case StatusCode.SERVER_ERROR:
-          return error(ErrorMessages.SERVER_ERROR);
+          return errorHandler(ErrorMessages.SERVER_ERROR);
         default:
-          return error(ErrorMessages.UNKNOWN);
+          return errorHandler(ErrorMessages.UNKNOWN);
       }
     });
 
     xhr.addEventListener('error', function () {
-      return error(ErrorMessages.CONNECTION_ERROR);
+      return errorHandler(ErrorMessages.CONNECTION_ERROR);
     });
 
     xhr.addEventListener('timeout', function () {
-      return error(ErrorMessages.timeout + xhr.timeout + 'ms');
+      return errorHandler(ErrorMessages.timeout + xhr.timeout + 'ms');
     });
 
     xhr.timeout = 10000;

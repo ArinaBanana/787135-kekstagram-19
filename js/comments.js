@@ -9,7 +9,7 @@ window.comments = (function () {
   var socialComments = document.querySelector('.social__comments');
   var socialComment = document.querySelector('.social__comment');
 
-  var createComments = function (commentData) {
+  var create = function (commentData) {
     var commentsElement = socialComment.cloneNode(true);
 
     var commentAvatar = commentsElement.querySelector('.social__picture');
@@ -26,7 +26,7 @@ window.comments = (function () {
     socialCommentCount.innerHTML = current + ' из ' + '<span class="comments-count">' + total + '</span>' + ' комментариев';
   };
 
-  var renderComments = function (comments) {
+  var render = function (comments) {
     var countComments = comments.length;
     var countShown = 0;
     socialComments.innerHTML = '';
@@ -35,7 +35,7 @@ window.comments = (function () {
       commentsLoader.classList.remove('hidden');
     }
 
-    var appendMoreComments = function () {
+    var appendMore = function () {
       var countRender = LIMIT_COMMENTS;
 
       if (countShown + countRender > countComments) {
@@ -45,7 +45,7 @@ window.comments = (function () {
       var fragment = document.createDocumentFragment();
       for (var i = countShown; i < countShown + countRender; i++) {
         var comment = comments[i];
-        var commentElement = createComments(comment);
+        var commentElement = create(comment);
         fragment.appendChild(commentElement);
       }
 
@@ -55,17 +55,21 @@ window.comments = (function () {
 
       if (countShown === countComments) {
         commentsLoader.classList.add('hidden');
-        commentsLoader.removeEventListener('click', appendMoreComments);
+        commentsLoader.removeEventListener('click', loadMoreHandler);
       }
     };
 
-    appendMoreComments();
+    appendMore();
 
-    commentsLoader.addEventListener('click', appendMoreComments);
+    var loadMoreHandler = function () {
+      appendMore();
+    };
+
+    commentsLoader.addEventListener('click', loadMoreHandler);
   };
 
   return {
-    renderComments: renderComments
+    render: render
   };
 
 })();
