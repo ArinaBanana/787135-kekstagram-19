@@ -55,7 +55,9 @@ window.photosFilter = (function () {
       var buttons = form.querySelectorAll('.img-filters__button');
 
       buttons.forEach(function (button) {
-        button.classList.remove('img-filters__button--active');
+        if (button.classList.contains('img-filters__button--active')) {
+          button.classList.remove('img-filters__button--active');
+        }
       });
 
       if (evt.target.type === 'button') {
