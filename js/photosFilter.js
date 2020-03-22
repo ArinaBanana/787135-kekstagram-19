@@ -2,6 +2,7 @@
 
 window.photosFilter = (function () {
   var DEBOUNCE_INTERVAL = 500;
+  var COUNT = 10;
 
   var imgFilters = document.querySelector('.img-filters');
   var form = imgFilters.querySelector('.img-filters__form');
@@ -14,8 +15,6 @@ window.photosFilter = (function () {
       return photos;
     },
     RANDOM: function (photos) {
-      var COUNT = 10;
-
       var allIndexes = [];
       var result = [];
 
