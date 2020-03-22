@@ -46,15 +46,11 @@ window.effects = (function () {
   var effectPicture = document.querySelector('.img-upload__preview');
 
   var setEffect = function (effect) {
+    var foundClass = Array.prototype.find.call(effectPicture.classList, function (effectClass) {
+      return effectClass.indexOf('effects__preview--') === 0;
+    });
 
-    for (var i = 0; i < effectPicture.classList.length; i++) {
-      var effectValue = effectPicture.classList[i];
-
-      if (effectValue.indexOf('effects__preview--') === 0) {
-        effectPicture.classList.remove(effectValue);
-      }
-    }
-
+    effectPicture.classList.remove(foundClass);
     effectPicture.classList.add('effects__preview--' + effect);
 
     var value = getEffectValue(effect);
