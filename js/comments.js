@@ -55,13 +55,17 @@ window.comments = (function () {
 
       if (countShown === countComments) {
         commentsLoader.classList.add('hidden');
-        commentsLoader.removeEventListener('click', appendMoreComments);
+        commentsLoader.removeEventListener('click', loadMoreHandler);
       }
     };
 
     appendMoreComments();
 
-    commentsLoader.addEventListener('click', appendMoreComments);
+    var loadMoreHandler = function () {
+      appendMoreComments();
+    };
+
+    commentsLoader.addEventListener('click', loadMoreHandler);
   };
 
   return {
