@@ -51,10 +51,13 @@ window.photos = (function () {
     pictures.appendChild(fragment);
 
     var renderBigPhotoByPictureElement = function (picture) {
-      var url = picture.getAttribute('src');
-      var clickedPhoto = objPhotos[url];
-      renderBigPhoto(clickedPhoto);
-      filter.hide();
+      try {
+        var url = picture.getAttribute('src');
+        var clickedPhoto = objPhotos[url];
+        renderBigPhoto(clickedPhoto, filter.show);
+      } catch (e) {
+        // обработка ошибки
+      }
     };
 
     var openClickHandler = function (evt) {
