@@ -4,11 +4,10 @@ window.photosFilter = (function () {
   var DEBOUNCE_INTERVAL = 500;
   var COUNT = 10;
 
+  var utils = window.utils;
+
   var imgFilters = document.querySelector('.img-filters');
   var form = imgFilters.querySelector('.img-filters__form');
-
-  var getRandomNumber = window.utils.getRandomNumber;
-  var debounce = window.utils.debounce;
 
   var Filters = {
     DEFAULT: function (photos) {
@@ -19,7 +18,7 @@ window.photosFilter = (function () {
       var result = [];
 
       for (var j = 0; j < COUNT; j++) {
-        var randomIndex = getRandomNumber(0, allIndexes.length);
+        var randomIndex = utils.getRandomNumber(0, allIndexes.length);
         var index = allIndexes[randomIndex];
         allIndexes.splice(randomIndex, 1);
         var photo = photos[index];
@@ -44,7 +43,7 @@ window.photosFilter = (function () {
     filterHandler(getDefaultFilteredPhotos(photos));
     imgFilters.classList.remove('img-filters--inactive');
 
-    var doFilter = debounce(function (filterName) {
+    var doFilter = utils.debounce(function (filterName) {
       var getFilteredPhotos = Filters[filterName];
       var filteredPhotos = getFilteredPhotos(photos);
 

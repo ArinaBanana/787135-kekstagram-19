@@ -2,10 +2,6 @@
 
 window.errors = (function () {
   var ESC_KEY = window.utils.escKey;
-
-  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
-  var main = document.querySelector('main');
-
   var Messages = {
     NOT_FOUND: 'Не найдено',
     SERVER_ERROR: 'Внутренняя ошибка сервера',
@@ -13,6 +9,9 @@ window.errors = (function () {
     CONNECTION_ERROR: 'Произошла ошибка соединения',
     UNKNOWN: 'Неизвестная ошибка'
   };
+
+  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  var main = document.querySelector('main');
 
   var createMessage = function (error) {
     var errorElement = errorTemplate.cloneNode(true);
