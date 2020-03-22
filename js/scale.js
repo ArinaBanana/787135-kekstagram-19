@@ -7,7 +7,7 @@ window.scale = (function () {
     STEP: 25
   };
 
-  var initScale = function (scale) {
+  var init = function (scale) {
     var scaleControlSmaller = scale.querySelector('.scale__control--smaller');
     var scaleControlBigger = scale.querySelector('.scale__control--bigger');
     var scaleControlValue = scale.querySelector('.scale__control--value');
@@ -66,7 +66,7 @@ window.scale = (function () {
   };
 
   return {
-    initScale: initScale
+    init: init
   };
 
 })();
