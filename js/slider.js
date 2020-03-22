@@ -37,6 +37,10 @@ window.slider = (function () {
       effectLevel.classList.add('hidden');
     };
 
+    var getIsHidden = function () {
+      return effectLevel.classList.contains('hidden');
+    };
+
     sliderToggle.addEventListener('mousedown', function (evt) {
       evt.preventDefault();
 
@@ -72,7 +76,8 @@ window.slider = (function () {
       setDefaultPositionToggle: setDefaultPositionToggle,
       showSlider: showSlider,
       hideSlider: hideSlider,
-      registerHandler: registerHandler
+      registerHandler: registerHandler,
+      getIsHidden: getIsHidden
     };
   };
 

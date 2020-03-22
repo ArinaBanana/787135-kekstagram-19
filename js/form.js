@@ -75,7 +75,7 @@ window.form = (function () {
 
       if (effect === DEFAULT_EFFECT) {
         slider.hideSlider();
-      } else {
+      } else if (slider.getIsHidden()) {
         slider.showSlider();
       }
 
