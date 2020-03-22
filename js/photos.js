@@ -34,8 +34,20 @@ window.photos = (function () {
     });
   };
 
+  var openClickHandler = null;
+  var pressEnterHandler = null;
+
   var renderPhotos = function (photos) {
     resetPictures();
+
+    if (openClickHandler) {
+      pictures.removeEventListener('click', openClickHandler);
+    }
+
+    if (pressEnterHandler) {
+      document.removeEventListener('keydown', pressEnterHandler);
+    }
+
     var fragment = document.createDocumentFragment();
 
     var objPhotos = {};
@@ -60,7 +72,7 @@ window.photos = (function () {
       }
     };
 
-    var openClickHandler = function (evt) {
+    openClickHandler = function (evt) {
       if (evt.target.tagName === 'IMG' && evt.target.classList.contains('picture__img')) {
         renderBigPhotoByPictureElement(evt.target);
       }
@@ -68,7 +80,7 @@ window.photos = (function () {
 
     pictures.addEventListener('click', openClickHandler);
 
-    var pressEnterHandler = function (evt) {
+    pressEnterHandler = function (evt) {
       if (evt.key === ENTER_KEY && evt.target.tagName === 'A' && evt.target.classList.contains('picture')) {
         var picture = evt.target.querySelector('.picture__img');
         renderBigPhotoByPictureElement(picture);
