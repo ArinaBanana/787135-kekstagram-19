@@ -26,7 +26,7 @@ window.photos = (function () {
     return photoElement;
   };
 
-  var resetPictures = function () {
+  var reset = function () {
     var picturesList = pictures.querySelectorAll('.picture');
 
     picturesList.forEach(function (picture) {
@@ -37,8 +37,8 @@ window.photos = (function () {
   var openClickHandler = null;
   var pressEnterHandler = null;
 
-  var renderPhotos = function (photos) {
-    resetPictures();
+  var render = function (photos) {
+    reset();
 
     if (openClickHandler) {
       pictures.removeEventListener('click', openClickHandler);
@@ -90,7 +90,7 @@ window.photos = (function () {
   };
 
   var filterHandler = function (filteredPhotos) {
-    renderPhotos(filteredPhotos);
+    render(filteredPhotos);
   };
 
   var successHandler = function (photos) {
