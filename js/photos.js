@@ -6,9 +6,9 @@ window.photos = (function () {
   var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   var pictures = document.querySelector('.pictures');
 
-  var getPhotos = window.data.getPhotos;
-  var renderError = window.errors.renderError;
-  var renderBigPhoto = window.bigPhoto.renderBigPhoto;
+  var data = window.data;
+  var errors = window.errors;
+  var bigPhoto = window.bigPhoto;
   var filter = window.photosFilter;
 
   var createPhotoElement = function (photo) {
@@ -65,7 +65,7 @@ window.photos = (function () {
       try {
         var url = picture.getAttribute('src');
         var clickedPhoto = objPhotos[url];
-        renderBigPhoto(clickedPhoto, filter.show);
+        bigPhoto.render(clickedPhoto, filter.show);
       } catch (e) {
         // обработка ошибки
       }
@@ -93,17 +93,16 @@ window.photos = (function () {
     renderPhotos(filteredPhotos);
   };
 
-  var successHandler = function (data) {
-    var photos = data;
+  var successHandler = function (photos) {
     filter.init(photos, filterHandler);
   };
 
   var errorHandler = function (err) {
-    renderError({title: err, actionTitle: 'Повторить'}, function () {
-      getPhotos(successHandler, errorHandler);
+    errors.render({title: err, actionTitle: 'Повторить'}, function () {
+      data.getPhotos(successHandler, errorHandler);
     });
   };
 
-  getPhotos(successHandler, errorHandler);
+  data.getPhotos(successHandler, errorHandler);
 
 })();
