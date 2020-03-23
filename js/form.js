@@ -47,7 +47,6 @@ window.form = (function () {
 
   var closePopupForm = function () {
     popup.close(uploadImgOverlay, pressEscapeHandler);
-    scale.remove();
     uploadForm.reset();
   };
 
