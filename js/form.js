@@ -15,6 +15,8 @@ window.form = (function () {
   var uploadForm = document.querySelector('.img-upload__form');
 
   var uploadImgOverlay = uploadForm.querySelector('.img-upload__overlay');
+  var img = uploadImgOverlay.querySelector('img');
+
   var uploadInput = uploadForm.querySelector('.img-upload__input');
   var uploadClose = uploadForm.querySelector('.img-upload__cancel');
   var buttonSubmit = uploadForm.querySelector('.img-upload__submit');
@@ -37,22 +39,37 @@ window.form = (function () {
     return isInputHashtags || isTextareaDescription;
   };
 
-  var openPopupForm = function () {
-    effects.setEffect(DEFAULT_EFFECT);
+  var openPopupForm = function (imgUrl) {
+    effects.set(DEFAULT_EFFECT);
     effectLevel.classList.add('hidden');
     scale.reset();
+    img.src = imgUrl;
     popup.open(uploadImgOverlay, pressEscapeHandler);
     buttonSubmit.removeAttribute('disabled');
   };
 
   var closePopupForm = function () {
     popup.close(uploadImgOverlay, pressEscapeHandler);
-    scale.remove();
     uploadForm.reset();
   };
 
-  uploadInput.addEventListener('change', function () {
-    openPopupForm();
+  uploadInput.addEventListener('change', function (evt) {
+    var isFile = Boolean(evt.target.files.length);
+
+    if (isFile) {
+      var file = evt.target.files[0];
+      var reader = new FileReader();
+
+      var loadendHandler = function () {
+        var imgUrl = reader.result;
+        openPopupForm(imgUrl);
+      };
+
+      reader.onloadend = loadendHandler;
+
+      reader.readAsDataURL(file);
+    }
+
   });
 
   uploadClose.addEventListener('click', function () {
@@ -64,7 +81,7 @@ window.form = (function () {
       var effect = evt.target.value;
 
       var changeHandler = function (currentPercent) {
-        effects.applyEffect(currentPercent, effect);
+        effects.apply(currentPercent, effect);
       };
 
       slider.registerHandler(changeHandler);
@@ -76,7 +93,7 @@ window.form = (function () {
       }
 
       slider.setDefaultPositionToggle();
-      effects.setEffect(effect);
+      effects.set(effect);
     }
   });
 

@@ -44,11 +44,6 @@ window.scale = (function () {
       }
     };
 
-    var remove = function () {
-      scaleControlSmaller.removeEventListener('click', decrementScale);
-      scaleControlBigger.removeEventListener('click', incrementScale);
-    };
-
     var reset = function () {
       applyScale(ValueScale.MAX);
     };
@@ -59,7 +54,6 @@ window.scale = (function () {
     reset();
 
     return {
-      remove: remove,
       reset: reset
     };
 
