@@ -45,7 +45,7 @@ window.effects = (function () {
 
   var effectPicture = document.querySelector('.img-upload__preview');
 
-  var setEffect = function (effect) {
+  var set = function (effect) {
     var foundClass = Array.prototype.find.call(effectPicture.classList, function (effectClass) {
       return effectClass.indexOf('effects__preview--') === 0;
     });
@@ -79,7 +79,7 @@ window.effects = (function () {
     return effectsSettings[effect];
   };
 
-  var applyEffect = function (currentPercent, effect) {
+  var apply = function (currentPercent, effect) {
     var value = getEffectValue(effect);
     var min = value.min;
     var max = value.max;
@@ -101,8 +101,8 @@ window.effects = (function () {
   };
 
   return {
-    setEffect: setEffect,
-    applyEffect: applyEffect
+    set: set,
+    apply: apply
   };
 
 })();

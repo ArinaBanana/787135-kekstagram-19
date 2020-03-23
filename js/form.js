@@ -38,7 +38,7 @@ window.form = (function () {
   };
 
   var openPopupForm = function () {
-    effects.setEffect(DEFAULT_EFFECT);
+    effects.set(DEFAULT_EFFECT);
     effectLevel.classList.add('hidden');
     scale.reset();
     popup.open(uploadImgOverlay, pressEscapeHandler);
@@ -63,7 +63,7 @@ window.form = (function () {
       var effect = evt.target.value;
 
       var changeHandler = function (currentPercent) {
-        effects.applyEffect(currentPercent, effect);
+        effects.apply(currentPercent, effect);
       };
 
       slider.registerHandler(changeHandler);
@@ -75,7 +75,7 @@ window.form = (function () {
       }
 
       slider.setDefaultPositionToggle();
-      effects.setEffect(effect);
+      effects.set(effect);
     }
   });
 
